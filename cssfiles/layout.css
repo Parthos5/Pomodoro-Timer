@@ -1,0 +1,115 @@
+section{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    /* background-image: url(./theme/seoul.jpg); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    justify-content: center;
+    column-gap: 4vw;
+}
+
+/*navbar begins*/
+.navbartask{
+    height: 45px;
+    background-color: #db4c3f;
+    margin-right: 0px !important;
+    transition: width 0.6s;
+    padding: 0px 50px;
+    z-index: 20;
+}
+
+.navbartask{
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: whitesmoke;
+    padding: 10px 51px;
+    font-size: 18px;
+    position: fixed;
+    right: 0;
+}
+
+.tabs{
+    cursor: pointer;
+}
+
+.sections{
+    display: flex;
+    column-gap: 25px;
+}
+
+#bell{
+    height: 25px;
+    cursor:pointer;
+}
+#hamburger{
+    height: 20px;
+    left: 18px;
+    position: absolute;
+    display: none;
+    /* animation: ham 1s; */
+}
+
+#rightarrow{
+    height: 24px;
+    display: none;
+    position: absolute;
+    left: 18px;
+    /* transition:display 1s */
+    cursor: pointer;
+}
+
+#rightarrow:hover{
+    box-shadow: 0 0 8px  4px rgb(234 76 137 / 10%);
+}
+
+/*navbar ends*/
+
+.mainleftcontainer{
+    display: flex;
+    column-gap: 4vw;
+    margin-left: 1vw;
+}
+
+.dataspotify{
+    display: flex;
+    flex-direction: column;
+    row-gap: 2vh;
+    justify-content: center;
+    margin-top: 5vh;
+}
+
+.dataresult{
+    height: 24vh;
+    width: 30vw;
+    background: linear-gradient(135deg,rgba(255,255,255,0.1),rgba(255,255,255,0));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow:0 5px 9px 0 rgba(0,0,0,0.37);
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.musicbox{
+    height: 56vh;
+    width: 30vw;
+}
+
+.mainrightcontainer{
+    height: 80vh;
+    width: 33vw;
+    margin-top: 5vh;
+    background: linear-gradient(135deg,rgba(255,255,255,0.1),rgba(255,255,255,0));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow:0 5px 9px 0 rgba(0,0,0,0.37);
+    border: none;
+    border-radius: 8px;
+    padding:20px
+}
