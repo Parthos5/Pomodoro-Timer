@@ -1,5 +1,6 @@
 let workTittle = document.getElementById("work");
 let breakTittle = document.getElementById("break");
+// localStorage.setItem("timer",JSON.stringify([25,5]))
 let timersettings = JSON.parse(localStorage.getItem("timer"));
 console.log(timersettings[0]); //WORKTIME
 let workTime = timersettings[0];

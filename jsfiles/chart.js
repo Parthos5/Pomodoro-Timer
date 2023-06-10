@@ -4,7 +4,7 @@ gradient.addColorStop(0, 'rgba(250,174,50,1)');
 gradient.addColorStop(1, 'rgba(250,174,50,0)');
 let data_arr;
 
-
+// localStorage.setItem("streaks",JSON.stringify([3,8,18,23,15,11,9]));
 function returndata_arr(){
   data_arr = JSON.parse(localStorage.getItem("streaks"));
   let indexd = data_arr[0];
