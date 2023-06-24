@@ -5,7 +5,7 @@ let olbody = document.getElementById("section");
 let notifyss = document.getElementById("notificationsoundeffect");
 
 //first default condition for music box
-// localStorage.setItem("musicbox","on");
+localStorage.setItem("musicbox","on");
 
 
 if(oltheme == "classic")
