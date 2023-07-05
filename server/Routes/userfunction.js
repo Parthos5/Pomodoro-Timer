@@ -2,6 +2,38 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 
-router.post("/login", async (req, res) => {
-  console.log("hello");
+router.post("/login",async (req, res) => {
+    // console.log(req.body)
+  const {email,password,stay} = req.body;
+  console.log(email)
+
+  if(!email || !password){
+    res.status(400).json({Error:"Missing credentials"})
+  }
+
+  try{
+    const userData = await User.findOne({email});
+    console.log(userData)
+
+    if(!userData){
+        res.status(400).json({Error:"Email not registered"})
+    }
+    else{
+        if(userData.password == password){
+            res.status(200).json({message:"Logged in successfully"})
+        }
+        else{
+            res.status(200).json({message:"Incorrect Password"})
+        }
+    }
+  }
+  catch(err){
+    res.status(500).json({Error:err})
+  }
 });
+
+router.get("/register",async (req,res) => {
+    res.status(200).json({hi:"ho"})
+})
+
+module.exports =  router

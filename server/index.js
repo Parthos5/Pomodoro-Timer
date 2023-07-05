@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.use("/",require('./Routes/userfunction'))
+app.use("/api",require('./Routes/userfunction'))
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
   })

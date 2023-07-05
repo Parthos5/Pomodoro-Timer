@@ -36,6 +36,7 @@ const userSchema = new Schema({
     },
     spotify_access_token:{
         type:String,
+        required:true
     },
     tasks:[taskSchema]
 })
