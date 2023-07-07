@@ -22,6 +22,10 @@ const taskSchema = new Schema({
 })
 
 const userSchema = new Schema({
+    _id:{
+        type:String,
+        required:true
+    },
     name:{
         type:String,
         required:true
@@ -41,4 +45,4 @@ const userSchema = new Schema({
     tasks:[taskSchema]
 })
 
-module.exports = mongoose.model("User",userSchema)
+module.exports = mongoose.model("User",userSchema,"User")

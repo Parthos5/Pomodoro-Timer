@@ -15,7 +15,7 @@ const MongoDB = async () => {
         .find({})
         .toArray()
         .then(function (err, data) {
-          err ? console.log(err) : console.log(data);
+          err ? console.log(err) : console.log("Success");
         });
     })
     .catch((err) => console.log("Error:" + err));

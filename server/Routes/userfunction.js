@@ -4,17 +4,24 @@ const User = require("../models/User");
 
 router.post("/login",async (req, res) => {
     // console.log(req.body)
-  const {email,password,stay} = req.body;
+  const {email,password} = req.body;
   console.log(email)
+  console.log(password)
 
   if(!email || !password){
     res.status(400).json({Error:"Missing credentials"})
   }
 
   try{
-    const userData = await User.findOne({email});
+    const userData = await User.findOne({email:email});
     console.log(userData)
 
+    // if(userData){
+    //     res.status(200).json({userdata:userData})
+    // }
+    // else{
+    //     res.status(200).json({success:false})
+    // }
     if(!userData){
         res.status(400).json({Error:"Email not registered"})
     }
