@@ -1,33 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      src="https://kit.fontawesome.com/a05e350007.js"
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" href="./cssfiles/style.css" />
-    <link rel="stylesheet" href="./cssfiles/layout.css">
-    <link rel="stylesheet" href="./cssfiles/musicbox.css">
-    <link rel="stylesheet" href="../../Balance/cssfiles/navbar.css">
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="cssfiles/taskbox.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <title>Timer</title>
-  </head>
-  <body>
-    <!-- <div id="navbartask" class="navbartask">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a05e350007.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./cssfiles/style.css" />
+  <link rel="stylesheet" href="./cssfiles/layout.css">
+  <link rel="stylesheet" href="./cssfiles/musicbox.css">
+  <link rel="stylesheet" href="../../Balance/cssfiles/navbar.css">
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="cssfiles/taskbox.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <title>Timer</title>
+</head>
+
+<body>
+  <!-- <div id="navbartask" class="navbartask">
       <img src="../icons/hamburger.png" id="hamburger" alt="" class="hamburger">
       <img src="../icons/right-arrow.png" onclick="opensidebar()" id="rightarrow" alt="">
       <p>TaskList</p>
@@ -42,43 +38,43 @@
           <img src="../icons/bell.png" id="bell" alt="">
       </div>
   </div> -->
-    <section id="section">
-      <div class="mainleftcontainer">
-        <div class="dataspotify">
-          <div class="dataresult">
-            <canvas id="myChart" width="420" height="160" ></canvas>
-          </div>
-          <div class="musicbox" id="musicbox">
-            <div class="searchmusicdiv">
-              <input type="text" id="search-input" placeholder="Search">
-              <div class="filterdiv">
-              <button id="search-button" class="searchtrack searchbtn" onclick = "searchtrack()">Song</button>
-              <button id="search-button" class="searchplaylist searchbtn" onclick = "search()">Playlist</button>
+  <section id="section">
+    <div class="mainleftcontainer">
+      <div class="dataspotify">
+        <div class="dataresult">
+          <canvas id="myChart" width="420" height="160"></canvas>
+        </div>
+        <div class="musicbox" id="musicbox">
+          <div class="searchmusicdiv">
+            <input type="text" id="search-input" placeholder="Search">
+            <div class="filterdiv">
+              <button id="search-button" class="searchtrack searchbtn" onclick="searchtrack()">Song</button>
+              <button id="search-button" class="searchplaylist searchbtn" onclick="search()">Playlist</button>
             </div>
           </div>
           <div id="playlists">
-            
+
           </div>
-            <div class="musiccontrols">
-              <div class="songdetails">
-                <img src="./music-white.png" id="songpicture" class="songpicture" alt="">
-                <div class="songdetailsdesc">
+          <div class="musiccontrols">
+            <div class="songdetails">
+              <img src="./music-white.png" id="songpicture" class="songpicture" alt="">
+              <div class="songdetailsdesc">
                 <p id="songname" class="songname"></p>
                 <p id="artistname" class="artistname"></p>
               </div>
-              </div>
-              <div class="controlactions">
+            </div>
+            <div class="controlactions">
               <img src="./previous.png" onclick="previous()" class="controlssong" alt="">
               <img id="play" onclick="pause()" src="./play.png" class="playpause" alt="">
               <img id="pause" onclick="pause()" src="./pause.png" class="playpause" alt="">
               <img src="./next.png" onclick="next()" class="controlssong" alt="">
             </div>
-            </div>
-            <!-- <button style="position:absolute" id="authbtn" onclick="author()">Connect</button> -->
-            <img src="connect-white.png" style="height:22px;width:22px;position:absolute;right:35px;
-            top:24px;cursor:pointer" onclick="author()" alt="">
           </div>
+          <!-- <button style="position:absolute" id="authbtn" onclick="author()">Connect</button> -->
+          <img src="connect-white.png" style="height:22px;width:22px;position:absolute;right:35px;
+            top:24px;cursor:pointer" onclick="author()" alt="">
         </div>
+      </div>
       <div class="container">
         <div class="secondarycontainer">
           <div class="painel">
@@ -99,245 +95,264 @@
             <button id="start" onclick="start()">
               <i class="fa-solid fa-play"></i>
             </button>
-            <a id="reset" href="index.html"
-              ><i class="fa-solid fa-arrow-rotate-left"></i
-            ></a>
+            <a id="reset" href="index.html"><i class="fa-solid fa-arrow-rotate-left"></i></a>
           </div>
-          <button id="bottone5" onclick="opensettings()" class="settingsbtn">
+          <button id="bottone5" class="bottone5" onclick="opensettings()" class="settingsbtn">
             Settings
           </button>
+          <button id="loginbtn" class="bottone5" onclick="loginset()" style="margin-top: 20px;">Log in</button>
         </div>
-      </div>  
+      </div>
     </div>
     <div class="mainrightcontainer">
       <div class="taskheading">
         <div class="date">
           <h1 id="day">Today</h1>
           <p id="todaydate">13th March</p>
-      </div>
+        </div>
         <h1 id="clock"></h1>
       </div>
       <button class="focusbtn" id="focusbtn" onclick="togglefullscreen()">
         Focus Mode
-    </button>
+      </button>
       <div id="tasks">
-      <div id="element" class="element">
-        <label class="containercheck">
+        <div id="element" class="element">
+          <label class="containercheck">
             <input type="checkbox">
             <div class="checkmark"></div>
-        </label>
-        <p id="mytask">Making frontend of our website</p>
-        <img src="../icons/red-flag.png" id="flag" alt="">
-        <img src="../icons/more.png" id="more" class="more" alt="">
-    </div>
-
-    <div id="element" class="element">
-      <label class="containercheck">
-          <input type="checkbox">
-          <div class="checkmark"></div>
-      </label>
-      <p id="mytask">Go cycling for 1 hour</p>
-      <img src="../icons/blue-flag.png" id="flag" alt="">
-      <img src="../icons/more.png" id="more" class="more" alt="">
-  </div>
-
-  <div id="element" class="element">
-    <label class="containercheck">
-        <input type="checkbox">
-        <div class="checkmark"></div>
-    </label>
-    <p id="mytask">Take a Shower</p>
-    <img src="../icons/yellow-flag.png" id="flag" alt="">
-    <img src="../icons/more.png" id="more" class="more" alt="">
-</div>
-
-<div id="element" class="element">
-  <label class="containercheck">
-      <input type="checkbox">
-      <div class="checkmark"></div>
-  </label>
-  <p id="mytask">Complete Module 4 of Operating Systems</p>
-  <img src="../icons/red-flag.png" id="flag" alt="">
-  <img src="../icons/more.png" id="more" class="more" alt="">
-</div>
-
-                        <div class="element" id="addtask">
-                            <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
-                            <p id="mytask" class="addtasktext">Add a Task</p>
-                            <!-- <img src="../icons/red-flag.png" id="flag" alt="">
-                            <p>14-03-2023</p> -->
-                        </div>
-
-                        <div class="addcontainer" id="addcontainer">
-                          <input type="text" id="entertask" placeholder="Enter a Task">
-                          <div class="pranddate">
-                              <div id="options" class="options">
-                                  <div onclick="priority(this)" id="p1" name="p1" value="1" class="opt redopt">
-                                      <img class="flagopt" src="../icons/red-flag.png" alt="">
-                                      <p>Priority 1</p>
-                                  </div>
-                                  <div onclick="priority(this)" id="p2" name="p2" value="2" class="opt orangeopt">
-                                      <img class="flagopt" src="../icons/yellow-flag.png" alt="">
-                                      <p>Priority 2</p>
-                                  </div>
-                                  <div onclick="priority(this)" id="p3" name="p3" value="3" class="opt greenopt">
-                                      <img class="flagopt" src="../icons/blue-flag.png" alt="">
-                                      <p>Priority 3</p>
-                                  </div>
-                                  <div onclick="priority(this)" id="p4" name="p4" value="4" class="opt blueopt">
-                                      <img class="flagopt" src="../icons/grey-flag.png" alt="">
-                                      <p>Priority 4</p>
-                                  </div>
-                              </div>
-                              <div class="dateandbtns">
-                                  <input type="date" name="" id="dateaddtask">
-                                  <div class="addbtns">
-                                      <button id="cancel" class="sort">Cancel</button>
-                                      <button id="addthetask" class="btn"> Add
-                                      </button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-    </div></div>
-      <div id="settings" class="settings">
-        <div class="optiontabs">
-          <div class="settingsoptiontabs">
-            <button
-              onclick="showtabinfo(this)"
-              class="optionbtn"
-              id="generalset"
-            >
-              General
-            </button>
-            <button onclick="showtabinfo(this)" class="optionbtn" id="timerset">
-              Timer
-            </button>
-            <button
-              onclick="showtabinfo(this)"
-              class="optionbtn"
-              id="notificationset"
-            >
-              Notification
-            </button>
-          </div>
-          <button class="default" onclick="defaultset()">Reset Default</button>
+          </label>
+          <p id="mytask">Making frontend of our website</p>
+          <img src="../icons/red-flag.png" id="flag" alt="">
+          <img src="../icons/more.png" id="more" class="more" alt="">
         </div>
-        <div class="tabinfodiv">
-          <div id="generaltab" class="generaltab tabdescription">
-            <div class="selecttheme">
-              <h4>Select Theme:</h4>
-              <select id="themeinput" name="theme">
-                <option value="classic">Classic</option>
-                <option value="rainyday">Rainy Day</option>
-                <option value="seoul">Seoul Sunrise</option>
-                <option value="coffee">Coffee Shop</option>
-                <option value="dreamy">Dreamy Clouds</option>
-                <option value="cat">Cats</option>
-              </select>
-            </div>
-            <div class="classicpomodiv spotifybtndiv">
-              <label class="switch">
-                <input type="checkbox" id="musictogg">
-                <span class="slider">
-                 <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation"><path fill="none" d="m4 16.5 8 8 16-16"></path></svg> 
-                </span>
-              </label>
-              <div class="classicpomodesc spotifybtn">
-                <p class="classictech">Show Spotify Playlist</p>
+
+        <div id="element" class="element">
+          <label class="containercheck">
+            <input type="checkbox">
+            <div class="checkmark"></div>
+          </label>
+          <p id="mytask">Go cycling for 1 hour</p>
+          <img src="../icons/blue-flag.png" id="flag" alt="">
+          <img src="../icons/more.png" id="more" class="more" alt="">
+        </div>
+
+        <div id="element" class="element">
+          <label class="containercheck">
+            <input type="checkbox">
+            <div class="checkmark"></div>
+          </label>
+          <p id="mytask">Take a Shower</p>
+          <img src="../icons/yellow-flag.png" id="flag" alt="">
+          <img src="../icons/more.png" id="more" class="more" alt="">
+        </div>
+
+        <div id="element" class="element">
+          <label class="containercheck">
+            <input type="checkbox">
+            <div class="checkmark"></div>
+          </label>
+          <p id="mytask">Complete Module 4 of Operating Systems</p>
+          <img src="../icons/red-flag.png" id="flag" alt="">
+          <img src="../icons/more.png" id="more" class="more" alt="">
+        </div>
+
+        <div class="element" id="addtask">
+          <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
+          <p id="mytask" class="addtasktext">Add a Task</p>
+          <!-- <img src="../icons/red-flag.png" id="flag" alt="">
+                            <p>14-03-2023</p> -->
+        </div>
+
+        <div class="addcontainer" id="addcontainer">
+          <input type="text" id="entertask" placeholder="Enter a Task">
+          <div class="pranddate">
+            <div id="options" class="options">
+              <div onclick="priority(this)" id="p1" name="p1" value="1" class="opt redopt">
+                <img class="flagopt" src="../icons/red-flag.png" alt="">
+                <p>Priority 1</p>
+              </div>
+              <div onclick="priority(this)" id="p2" name="p2" value="2" class="opt orangeopt">
+                <img class="flagopt" src="../icons/yellow-flag.png" alt="">
+                <p>Priority 2</p>
+              </div>
+              <div onclick="priority(this)" id="p3" name="p3" value="3" class="opt greenopt">
+                <img class="flagopt" src="../icons/blue-flag.png" alt="">
+                <p>Priority 3</p>
+              </div>
+              <div onclick="priority(this)" id="p4" name="p4" value="4" class="opt blueopt">
+                <img class="flagopt" src="../icons/grey-flag.png" alt="">
+                <p>Priority 4</p>
               </div>
             </div>
-            <a href="https://facilethings.com/blog/en/science-behind-pomodoro-technique" targer="_blank"></a>
-            <div class="pomodoroexp">
-              <p class="classictech">Learn More about the Pomodoro Technique</p>
-              <img src="./rightarrow.png" class="rightarrow" alt="">
+            <div class="dateandbtns">
+              <input type="date" name="" id="dateaddtask">
+              <div class="addbtns">
+                <button id="cancel" class="sort">Cancel</button>
+                <button id="addthetask" class="btn"> Add
+                </button>
+              </div>
             </div>
-          </a>
           </div>
-          <div id="timertab" class="timertab tabdescription">
-            <div class="workinputcontainer">
+        </div>
+      </div>
+    </div>
+    <div id="settings" class="settings">
+      <div class="optiontabs">
+        <div class="settingsoptiontabs">
+          <button onclick="showtabinfo(this)" class="optionbtn" id="generalset">
+            General
+          </button>
+          <button onclick="showtabinfo(this)" class="optionbtn" id="timerset">
+            Timer
+          </button>
+          <button onclick="showtabinfo(this)" class="optionbtn" id="notificationset">
+            Notification
+          </button>
+        </div>
+        <button class="default" onclick="defaultset()">Reset Default</button>
+      </div>
+      <div class="tabinfodiv">
+        <div id="generaltab" class="generaltab tabdescription">
+          <div class="selecttheme">
+            <h4>Select Theme:</h4>
+            <select id="themeinput" name="theme">
+              <option value="classic">Classic</option>
+              <option value="rainyday">Rainy Day</option>
+              <option value="seoul">Seoul Sunrise</option>
+              <option value="coffee">Coffee Shop</option>
+              <option value="dreamy">Dreamy Clouds</option>
+              <option value="cat">Cats</option>
+            </select>
+          </div>
+          <div class="classicpomodiv spotifybtndiv">
+            <label class="switch">
+              <input type="checkbox" id="musictogg">
+              <span class="slider">
+                <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                  role="presentation">
+                  <path fill="none" d="m4 16.5 8 8 16-16"></path>
+                </svg>
+              </span>
+            </label>
+            <div class="classicpomodesc spotifybtn">
+              <p class="classictech">Show Spotify Playlist</p>
+            </div>
+          </div>
+          <a href="https://facilethings.com/blog/en/science-behind-pomodoro-technique" targer="_blank"></a>
+          <div class="pomodoroexp">
+            <p class="classictech">Learn More about the Pomodoro Technique</p>
+            <img src="./rightarrow.png" class="rightarrow" alt="">
+          </div>
+          </a>
+        </div>
+        <div id="timertab" class="timertab tabdescription">
+          <div class="workinputcontainer">
             <div class="workinputdiv inputdiv">
               <p class="timerinputhead">Work Time</p>
-            <input class="timerinputs" id="worktime" type="number"/>
-            <p id="minutessubh">minutes</p>
+              <input class="timerinputs" id="worktime" type="number" />
+              <p id="minutessubh">minutes</p>
+            </div>
+            <div class="breakinputdiv inputdiv">
+              <p class="timerinputhead">Break Time</p>
+              <input class="timerinputs" id="breaktime" type="number" />
+              <p id="minutessubh">minutes</p>
+            </div>
+            <div class="longbreakinputdiv inputdiv">
+              <p class="timerinputhead">Long Break Time</p>
+              <input class="timerinputs" id="breaktime" type="number" />
+              <p id="minutessubh">minutes</p>
+            </div>
           </div>
-          <div class="breakinputdiv inputdiv">
-            <p class="timerinputhead">Break Time</p>
-            <input class="timerinputs"
-              id="breaktime"
-              type="number"
-            />
-            <p id="minutessubh">minutes</p>
-          </div>
-          <div class="longbreakinputdiv inputdiv">
-            <p class="timerinputhead">Long Break Time</p>
-            <input class="timerinputs"
-              id="breaktime"
-              type="number"
-            />
-            <p id="minutessubh">minutes</p>
+          <div class="classicpomodiv">
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider">
+                <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                  role="presentation">
+                  <path fill="none" d="m4 16.5 8 8 16-16"></path>
+                </svg>
+              </span>
+            </label>
+            <div class="classicpomodesc">
+              <p class="classictech">Use the classic Pomodoro technique: Work, Short Break -> 4x, then one long break
+              </p>
+              <p class="denotepomo">Number of pomodoros is denoted ...</p>
+            </div>
           </div>
         </div>
-        <div class="classicpomodiv">
-          <label class="switch">
-            <input type="checkbox">
-            <span class="slider">
-             <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation"><path fill="none" d="m4 16.5 8 8 16-16"></path></svg> 
-            </span>
-          </label>
-          <div class="classicpomodesc">
-            <p class="classictech">Use the classic Pomodoro technique: Work, Short Break -> 4x, then one long break</p>
-            <p class="denotepomo">Number of pomodoros is denoted ...</p>
-          </div>
-        </div>
-          </div>
-          <div id="notificationtab" class="notificationtab tabdescription">
-            <div class="selecttheme">
-              <h4>Select Notification Sound:</h4>
-              <select onclick="playaudio(this)" name="theme" id="notificationsound">
-                <option value="bell">Bell</option>
-                <option value="chimes">Chime</option>
-                <option value="birds">Birds</option>
-                <option value="lofi">Lofi</option>
-                <option value="siren">Siren</option>
-              </select>
-              <div class="classicpomodiv" id="notificationtoggle">
-                <label class="switch" id="notifswitch">
-                  <input type="checkbox" id="notiftoggle">
-                  <span class="slider">
-                   <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation"><path fill="none" d="m4 16.5 8 8 16-16"></path></svg> 
-                  </span>
-                </label>
-                <div class="classicpomodesc">
-                  <p class="classictech">Play Sound after Timer Finished</p>
-                </div>
+        <div id="notificationtab" class="notificationtab tabdescription">
+          <div class="selecttheme">
+            <h4>Select Notification Sound:</h4>
+            <select onclick="playaudio(this)" name="theme" id="notificationsound">
+              <option value="bell">Bell</option>
+              <option value="chimes">Chime</option>
+              <option value="birds">Birds</option>
+              <option value="lofi">Lofi</option>
+              <option value="siren">Siren</option>
+            </select>
+            <div class="classicpomodiv" id="notificationtoggle">
+              <label class="switch" id="notifswitch">
+                <input type="checkbox" id="notiftoggle">
+                <span class="slider">
+                  <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                    role="presentation">
+                    <path fill="none" d="m4 16.5 8 8 16-16"></path>
+                  </svg>
+                </span>
+              </label>
+              <div class="classicpomodesc">
+                <p class="classictech">Play Sound after Timer Finished</p>
               </div>
             </div>
           </div>
-          <button id="save" class="save">Save changes</button>
         </div>
-        <img
-          src="crosswhite.png"
-          onclick="closesettings()"
-          id="closesettings"
-          alt=""
-        />
+        <button id="save" class="save">Save changes</button>
       </div>
+      <img src="crosswhite.png" onclick="closesettings()" id="closesettings" alt="" />
+    </div>
+    <div class="settings" id="login">
+      <h2 class="loginhead">Login to Balance</h2>
+      <div class="loginform">
+        <div class="selecttheme logininput">
+          <h4 class="inputhead">Email</h4>
+          <input id="themeinput" type="text" class="emailinput" placeholder="abc@example.com">
+        </div>
+        <div class="selecttheme logininput">
+          <h4 class="inputhead">Password</h4>
+          <input id="themeinput" type="password" class="emailinput" placeholder="Password">
+        </div>
+        <div class="classicpomodiv spotifybtndiv">
+          <label class="switch">
+            <input type="checkbox" id="musictogg">
+            <span class="slider">
+              <svg class="slider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                role="presentation">
+                <path fill="none" d="m4 16.5 8 8 16-16"></path>
+              </svg>
+            </span>
+          </label>
+          <div class="classicpomodesc spotifybtn">
+            <p class="classictech">Remember me</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
-      <audio id="notificationsoundeffect">
-        <!-- <source src="./notifications/bell.wav" type="audio/mpeg">  -->
-      </audio>
-      <audio id="testaudio">
-        <!-- <source src="./notifications/bell.wav" type="audio/mpeg">  -->
-      </audio>
-    </section>
-    <script src="./jsfiles/script.js"></script>
-    <script src="./jsfiles/onload.js"></script>
-    <script src="./jsfiles/customizetimer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/spotify-web-api-js"></script>
-    <script src="./jsfiles/auth.js"></script>
-    <script src="jsfiles/chart.js"></script>
-    <script src="jsfiles/taskbox.js"></script>
-  </body>
+    <audio id="notificationsoundeffect">
+      <!-- <source src="./notifications/bell.wav" type="audio/mpeg">  -->
+    </audio>
+    <audio id="testaudio">
+      <!-- <source src="./notifications/bell.wav" type="audio/mpeg">  -->
+    </audio>
+  </section>
+  <script src="./jsfiles/script.js"></script>
+  <script src="./jsfiles/onload.js"></script>
+  <script src="./jsfiles/customizetimer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/spotify-web-api-js"></script>
+  <script src="./jsfiles/auth.js"></script>
+  <script src="jsfiles/chart.js"></script>
+  <script src="jsfiles/taskbox.js"></script>
+</body>
+
 </html>

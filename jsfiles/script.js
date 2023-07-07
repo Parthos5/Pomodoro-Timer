@@ -85,6 +85,8 @@ function playnotification(){
 // open settings popup
 let settingsbtn = document.getElementById("buttone5");
 let settings = document.getElementById("settings");
+let loginbtn = document.getElementById("loginbtn");
+let login = document.getElementById("login")
 let general = document.getElementById("generaltab");
 let timer = document.getElementById("timertab");
 let notification = document.getElementById("notificationtab");
@@ -108,6 +110,14 @@ function opensettings() {
     "style",
     `background-color:transparent;color: white;`
   );
+}
+
+
+//function for login and register popup
+function loginset(){
+  login.style.visibility = "visible";
+  login.classList.toggle("show");
+  login.classList.remove("hide");
 }
 
 // close settings popup

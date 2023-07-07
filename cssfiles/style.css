@@ -148,7 +148,7 @@ h1 {
 }
 
 /* Settings button starts */
-#bottone5 {
+.bottone5 {
     align-items: center;
     background-color: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -176,18 +176,18 @@ h1 {
     cursor: pointer;
    }
    
-   #bottone5:hover,
-   #bottone5:focus {
+   .bottone5:hover,
+   .bottone5:focus {
     border-color: rgba(0, 0, 0, 0.15);
     box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
     color: rgba(0, 0, 0, 0.65);
    }
    
-   #bottone5:hover {
+   .bottone5:hover {
     transform: translateY(-1px);
    }
    
-   #bottone5:active {
+   .bottone5:active {
     background-color: #F0F0F1;
     border-color: rgba(0, 0, 0, 0.15);
     box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
@@ -225,6 +225,46 @@ h1 {
 .settings.hide{
     opacity:0;
     top:45%
+}
+
+#login{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 40px;
+    font-weight: bold;
+    color: rgb(230, 219, 219);
+    /* justify-content: center; */
+}
+
+.loginhead{
+    font-size: 40px;
+    margin-bottom: 30px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.loginform{
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+.logininput{
+    row-gap: 5px !important;
+}
+.inputhead{
+    color: var(--color-font);
+}
+.emailinput{
+    border: 1px solid grey;
+    transition: border 0.2s;
+    border-radius: 4px;
+    outline: none;
+}
+.emailinput:hover{
+    border: 1.2px solid rgb(195, 194, 194);
+}
+.emailinput:focus{
+    border: 1.4px solid rgb(255, 255, 255);
 }
 
 .optiontabs{
