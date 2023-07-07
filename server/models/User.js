@@ -22,16 +22,17 @@ const taskSchema = new Schema({
 })
 
 const userSchema = new Schema({
-    _id:{
-        type:String,
-        required:true
-    },
+    // _id:{
+    //     type:String,
+    //     required:true
+    // },
     name:{
         type:String,
         required:true
     },
     email:{
         type:String,
+
         required:true
     },
     password:{
@@ -40,7 +41,7 @@ const userSchema = new Schema({
     },
     spotify_access_token:{
         type:String,
-        required:true
+        default:"",
     },
     tasks:[taskSchema]
 })

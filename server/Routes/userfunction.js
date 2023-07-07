@@ -2,6 +2,26 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 
+router.post('/register',async (req,res) => {
+  const {email,name,password} = req.body;
+  try{
+    if(!email || !password || !name){
+      res.status(400).json({Error:"Missing Credentials"})
+    }
+    else{
+      await User.create({
+        email:email,
+        password:password,
+        name:name
+      });
+      res.status(400).json({message:"Success,User Created!"})
+    }
+  }
+  catch(err){
+    res.status(500).json({Error:err})
+  }
+})
+
 router.post("/login",async (req, res) => {
     // console.log(req.body)
   const {email,password} = req.body;
