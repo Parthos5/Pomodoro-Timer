@@ -267,12 +267,19 @@ h1 {
 #newaccount{
     text-align: center;
     margin-top:10px;
-    cursor:pointer;
-    color: #e8585d;
+    /* cursor:pointer; */
+    letter-spacing: 1px;
+    white-space: nowrap;
+    display: inline;
+    font-family:Arial, Helvetica, sans-serif
 }
 
-#newaccount:hover{
+#signup{
+    cursor: pointer;
     text-decoration: underline;
+    display: inline;
+    font-weight: 400;
+    letter-spacing:normal;
 }
 
 .inputhead {
