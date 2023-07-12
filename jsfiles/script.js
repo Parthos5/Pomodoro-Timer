@@ -1,6 +1,6 @@
 let workTittle = document.getElementById("work");
 let breakTittle = document.getElementById("break");
-localStorage.setItem("timer",JSON.stringify([25,5]))
+localStorage.setItem("timer", JSON.stringify([25, 5]));
 let timersettings = JSON.parse(localStorage.getItem("timer"));
 console.log(timersettings[0]); //WORKTIME
 let workTime = timersettings[0];
@@ -23,8 +23,8 @@ function update() {
   console.log(timersettings[0]); //WORKTIME
   workTime = timersettings[0];
   breakTime = timersettings[1];
-// let workTime = 1;
-// let breakTime = 1;
+  // let workTime = 1;
+  // let breakTime = 1;
   document.getElementById("minutes").innerHTML = workTime;
   document.getElementById("seconds").innerHTML = seconds;
 }
@@ -68,16 +68,15 @@ function start() {
       seconds = 59;
     }
   };
-  if((workTime-workMinutes)%25 == 0){
+  if ((workTime - workMinutes) % 25 == 0) {
     updatestreaks();
   }
   setInterval(timerFunction, 1000);
 }
 
-function playnotification(){
+function playnotification() {
   let toggle = localStorage.getItem("notification");
-  if(toggle == "on")
-  {
+  if (toggle == "on") {
     noti.play();
   }
 }
@@ -86,7 +85,7 @@ function playnotification(){
 let settingsbtn = document.getElementById("buttone5");
 let settings = document.getElementById("settings");
 let loginbtn = document.getElementById("loginbtn");
-let login = document.getElementById("login")
+let login = document.getElementById("login");
 let general = document.getElementById("generaltab");
 let timer = document.getElementById("timertab");
 let notification = document.getElementById("notificationtab");
@@ -112,9 +111,36 @@ function opensettings() {
   );
 }
 
-
 //function for login and register popup
-function loginset(){
+async function loginset() {
+  let emailinput = document.getElementById("emailinput").value;
+  let passwordinput = document.getElementById("passwordinput").value;
+  emailinput.value = "";
+  passwordinput.value = "";
+  let resp = await fetch("http://localhost:5000/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email: emailinput, password: passwordinput }),
+  }).then((res) => res.json());
+  console.log(resp);
+  if (resp.status == 200) {
+    login.style.visibility = "visible";
+    login.classList.toggle("show");
+    login.classList.remove("hide");
+  } else {
+    if (resp.status == 201) {
+      let emaildiv = document.getElementById("emailinputdiv");
+      emaildiv.innerHTML += `<p style="color:red">Wrong Email</p>`;
+    } else {
+      let passworddiv = document.getElementById("passwordinputdiv");
+      passworddiv.innerHTML += `<p style="color:red">Wrong password</p>`;
+    }
+  }
+}
+
+function loginopen() {
   login.style.visibility = "visible";
   login.classList.toggle("show");
   login.classList.remove("hide");
@@ -132,20 +158,19 @@ function closesettings() {
 }
 
 //updating streaks code
-let numericday = new Date;
+let numericday = new Date();
 let numericdate = numericday.getDay();
-console.log("date is "+numericdate);
-if(numericdate == 0)
-{
+console.log("date is " + numericdate);
+if (numericdate == 0) {
   numericdate = 7;
 }
 
 const today = new Date().getDay();
 console.log("today is" + today);
-let streaks = [numericdate,0,0,0,0,0,0,0];
+let streaks = [numericdate, 0, 0, 0, 0, 0, 0, 0];
 
 //function for  sending streaks data
-function updatestreaks(){
-  streaks[today-1] += 1;
-  localStorage.setItem("streaks",JSON.stringify(streaks));
+function updatestreaks() {
+  streaks[today - 1] += 1;
+  localStorage.setItem("streaks", JSON.stringify(streaks));
 }

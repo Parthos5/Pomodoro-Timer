@@ -100,7 +100,7 @@
           <button id="bottone5" class="bottone5" onclick="opensettings()" class="settingsbtn">
             Settings
           </button>
-          <button id="loginbtn" class="bottone5" onclick="loginset()" style="margin-top: 20px;">Log in</button>
+          <button id="loginbtn" class="bottone5" onclick="loginopen()" style="margin-top: 20px;">Log in</button>
         </div>
       </div>
     </div>
@@ -313,13 +313,13 @@
     <div class="settings loginsettings" id="login">
       <h2 class="loginhead">Login to Balance</h2>
       <div class="loginform">
-        <div class="selecttheme logininput">
+        <div id="emailinputdiv" class="selecttheme logininput">
           <h4 class="inputhead">Email</h4>
-          <input id="themeinput" type="text" class="emailinput" placeholder="abc@example.com">
+          <input id="emailinput" type="text" class="emailinput" placeholder="abc@example.com">
         </div>
         <div class="selecttheme logininput">
           <h4 class="inputhead">Password</h4>
-          <input id="themeinput" type="password" class="emailinput" placeholder="Password">
+          <input id="passwordinput" type="password" class="emailinput" placeholder="Password">
         </div>
         <div class="classicpomodiv spotifybtndiv">
           <label class="switch">

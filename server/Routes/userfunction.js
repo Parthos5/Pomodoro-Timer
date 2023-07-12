@@ -43,14 +43,14 @@ router.post("/login",async (req, res) => {
     //     res.status(200).json({success:false})
     // }
     if(!userData){
-        res.status(400).json({Error:"Email not registered"})
+        res.status(400).json({Error:"Email not registered",status:201})
     }
     else{
         if(userData.password == password){
-            res.status(200).json({message:"Logged in successfully"})
+            res.status(200).json({message:"Logged in successfully",status:200})
         }
         else{
-            res.status(200).json({message:"Incorrect Password"})
+            res.status(200).json({message:"Incorrect Password",status:202})
         }
     }
   }
