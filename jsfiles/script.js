@@ -146,6 +146,10 @@ function loginopen() {
   login.classList.remove("hide");
 }
 
+function registeruser(){
+  
+}
+
 // close settings popup
 function closesettings() {
   // settings.style.visibility = "hidden";
