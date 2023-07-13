@@ -7,8 +7,9 @@ const {
   matchedData,
   validationResult,
 } = require("express-validator");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM"
 
 router.post(
   "/register",
@@ -69,14 +70,20 @@ router.post(
       console.log(userData);
 
       if (!userData) {
-        res.status(400).json({ Error: "Email not registered", status: 201 });
+        res.status(400).json({ Error: "Email not registered"});
       } else {
 
-        const pwd = bcrypt.compare(password,userData.password)
+        const data = {
+          user:{
+            id:userData._id
+          }
+        }
+        const authToken = jwt.sign(data,JWT_SECRET)
+        const pwd = bcrypt.compare(password, userData.password);
         if (pwd) {
           res
             .status(200)
-            .json({ message: "Logged in successfully", status: 200 });
+            .json({ message: "Logged in successfully", authToken:authToken});
         } else {
           res.status(200).json({ message: "Incorrect Password", status: 202 });
         }
