@@ -7,6 +7,8 @@ const {
   matchedData,
   validationResult,
 } = require("express-validator");
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs");
 
 router.post(
   "/register",
@@ -23,17 +25,20 @@ router.post(
     }
 
     const { email, name, password } = req.body;
+    if (!email || !password || !name) {
+      res.status(400).json({ Error: "Missing Credentials" });
+    }
+
+    //adding bcrypt hash funtionality
+    const salt = await bcrypt.genSalt(10);
+    const secPassword = await bcrypt.hash(password, salt);
     try {
-      if (!email || !password || !name) {
-        res.status(400).json({ Error: "Missing Credentials" });
-      } else {
-        await User.create({
-          email: email,
-          password: password,
-          name: name,
-        });
-        res.status(400).json({ message: "Success,User Created!" });
-      }
+      await User.create({
+        email: email,
+        password: secPassword,
+        name: name,
+      });
+      res.status(200).json({ message: "Success,User Created!" });
     } catch (err) {
       res.status(500).json({ Error: err });
     }
@@ -63,16 +68,12 @@ router.post(
       const userData = await User.findOne({ email: email });
       console.log(userData);
 
-      // if(userData){
-      //     res.status(200).json({userdata:userData})
-      // }
-      // else{
-      //     res.status(200).json({success:false})
-      // }
       if (!userData) {
         res.status(400).json({ Error: "Email not registered", status: 201 });
       } else {
-        if (userData.password == password) {
+
+        const pwd = bcrypt.compare(password,userData.password)
+        if (pwd) {
           res
             .status(200)
             .json({ message: "Logged in successfully", status: 200 });
