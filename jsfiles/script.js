@@ -12,10 +12,28 @@ let minctr = 25;
 
 let seconds = "00";
 
-window.onload = () => {
+window.onload = async () => {
   document.getElementById("minutes").innerHTML = workTime;
   document.getElementById("seconds").innerHTML = seconds;
   workTittle.classList.add("active");
+  let authToken = localStorage.getItem("authToken");
+  if(authToken){
+    console.log("verify auth")
+    let test = await fetch("http://localhost:5000/verifyToken",{
+      headers:{
+        Authorization:"Bearer "+authToken
+      }
+    }).then((res)=>res.json());
+    if(test.status == 400){
+      loginopen();
+    }
+    else{
+      console.log("auth verified")
+    }
+  }
+  else{
+    loginopen()
+  }
 };
 
 function update() {
@@ -112,9 +130,12 @@ function opensettings() {
 }
 
 //function for login and register popup
+
 async function loginset() {
   let emailinput = document.getElementById("emailinput").value;
   let passwordinput = document.getElementById("passwordinput").value;
+  let rememberinput = document.getElementById("rememberme").checked
+  // console.log(rememberinput)
   emailinput.value = "";
   passwordinput.value = "";
   let resp = await fetch("http://localhost:5000/login", {
@@ -122,10 +143,14 @@ async function loginset() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: emailinput, password: passwordinput }),
+    body: JSON.stringify({ email: emailinput, password: passwordinput,remember:rememberinput }),
   }).then((res) => res.json());
-  console.log(resp);
+  console.log(resp)
+  console.log(resp.status);
   if (resp.status == 200) {
+    if(rememberinput){
+      localStorage.setItem("authToken",resp.authToken)
+    }
     login.style.visibility = "visible";
     login.classList.toggle("show");
     login.classList.remove("hide");

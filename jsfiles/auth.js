@@ -12,6 +12,7 @@ const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&r
 
 const params = new URLSearchParams(window.location.hash.substring(1));
 const accessToken = params.get("access_token");
+console.log(accessToken)
 
 // if(accessToken)
 // {
@@ -209,7 +210,7 @@ function playplaylist(e) {
   let playlisturl = e.querySelector("#playlisturl").innerHTML;
   let playstateimg = document.getElementById("play");
   let pausestateimg = document.getElementById("pause");
-  player.connect().then((success) => {
+  player.connect().then((success) =>{
     if (success) {
       player.addListener("ready", ({ device_id }) => {
         console.log("Connected with Device ID", device_id);
@@ -217,7 +218,7 @@ function playplaylist(e) {
       });
       player.addListener("ready", () => {
         fetch(
-          `https://api.spotify.com/v1/me/player/play?device_id=${mydeviced}`,
+          `https://api.spotify.com/v1/me/player/play`,
           {
             method: "PUT",
             headers: {

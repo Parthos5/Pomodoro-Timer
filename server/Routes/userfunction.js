@@ -82,12 +82,15 @@ router.post(
         if (pwd) {
           remember
             ? res.status(200).json({
+              status:200,
                 message: "Logged in successfully",
                 authToken: authToken,
               })
-            : res.status(200).json({ message: "Logged in successfully" });
+            : res.status(200).json({ 
+              status:200,message: "Logged in successfully" });
         } else {
-          res.status(200).json({ message: "Incorrect Password", status: 202 });
+          res.status(400).json({ 
+            status:400,message: "Incorrect Password", status: 202 });
         }
       }
     } catch (err) {
@@ -97,8 +100,9 @@ router.post(
 );
 
 router.get("/verifyToken", (req, res) => {
-  const token = req.headers.authorization;
-
+  const authHeader = req.headers["authorization"];
+  console.log(authHeader)
+  const [bearer, token] = authHeader.split(' ');
   if (!token) {
     return res
       .status(401)
@@ -108,9 +112,10 @@ router.get("/verifyToken", (req, res) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded; // Set the user information from the decoded token to the request object
-    res.status(200).json({ message: "Previously logged in" });
+    res.status(200).json({ 
+      status:200,message: "Previously logged in" });
   } catch (error) {
-    return res.status(401).json({ error: 400, message: "Invalid token." });
+    return res.status(401).json({ status: 400, message: "Invalid token." });
   }
 });
 

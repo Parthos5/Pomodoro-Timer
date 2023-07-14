@@ -17,23 +17,7 @@ app.get("/", (req, res) => {
 
 app.use("/", require("./Routes/userfunction"));
 
-const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization;
 
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Access denied. No token provided." });
-  }
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded; // Set the user information from the decoded token to the request object
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "Invalid token." });
-  }
-};
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
