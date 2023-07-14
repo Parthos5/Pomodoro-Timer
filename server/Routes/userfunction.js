@@ -9,7 +9,7 @@ const {
 } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM"
+const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM";
 
 router.post(
   "/register",
@@ -57,7 +57,7 @@ router.post(
     }
 
     // console.log(req.body)
-    const { email, password } = req.body;
+    const { email, password, remember } = req.body;
     console.log(email);
     console.log(password);
 
@@ -70,20 +70,22 @@ router.post(
       console.log(userData);
 
       if (!userData) {
-        res.status(400).json({ Error: "Email not registered"});
+        res.status(400).json({ Error: "Email not registered" });
       } else {
-
         const data = {
-          user:{
-            id:userData._id
-          }
-        }
-        const authToken = jwt.sign(data,JWT_SECRET)
+          user: {
+            id: userData._id,
+          },
+        };
+        const authToken = jwt.sign(data, JWT_SECRET);
         const pwd = bcrypt.compare(password, userData.password);
         if (pwd) {
-          res
-            .status(200)
-            .json({ message: "Logged in successfully", authToken:authToken});
+          remember
+            ? res.status(200).json({
+                message: "Logged in successfully",
+                authToken: authToken,
+              })
+            : res.status(200).json({ message: "Logged in successfully" });
         } else {
           res.status(200).json({ message: "Incorrect Password", status: 202 });
         }
@@ -94,8 +96,22 @@ router.post(
   }
 );
 
-router.get("/register", async (req, res) => {
-  res.status(200).json({ hi: "ho" });
+router.get("/verifyToken", (req, res) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ error: 404, message: "Access denied. No token provided." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded; // Set the user information from the decoded token to the request object
+    res.status(200).json({ message: "Previously logged in" });
+  } catch (error) {
+    return res.status(401).json({ error: 400, message: "Invalid token." });
+  }
 });
 
 module.exports = router;
