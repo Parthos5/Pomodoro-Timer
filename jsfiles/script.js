@@ -29,6 +29,11 @@ window.onload = async () => {
     }
     else{
       console.log("auth verified")
+      if(!test.remember){
+        console.log("remember me false")
+        localStorage.clearitem("authToken")
+        loginopen();
+      }
     }
   }
   else{

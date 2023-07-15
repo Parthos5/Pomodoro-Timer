@@ -122,8 +122,9 @@ router.get("/verifyToken", (req, res) => {
     req.user = decoded; // Set the user information from the decoded token to the request object
     res.status(200).json({
       status: 200,
-      message: "Previously logged in",
-    });
+      message: "Verified User",
+      remember: decoded.remember ? true : false
+    })
   } catch (error) {
     return res.status(401).json({ status: 400, message: "Invalid token." });
   }
