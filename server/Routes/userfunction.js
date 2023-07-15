@@ -72,25 +72,33 @@ router.post(
       if (!userData) {
         res.status(400).json({ Error: "Email not registered" });
       } else {
-        const data = {
-          user: {
-            id: userData._id,
-          },
-        };
+        const data = remember
+          ? {
+              user: {
+                id: userData._id,
+                remember: true,
+              },
+            }
+          : {
+              user: {
+                id: userData._id,
+                remember: false,
+              },
+            };
         const authToken = jwt.sign(data, JWT_SECRET);
         const pwd = bcrypt.compare(password, userData.password);
         if (pwd) {
-          remember
-            ? res.status(200).json({
-              status:200,
-                message: "Logged in successfully",
-                authToken: authToken,
-              })
-            : res.status(200).json({ 
-              status:200,message: "Logged in successfully" });
+          res.status(200).json({
+            status: 200,
+            message: "Logged in successfully",
+            authToken: authToken,
+          });
         } else {
-          res.status(400).json({ 
-            status:400,message: "Incorrect Password", status: 202 });
+          res.status(400).json({
+            status: 400,
+            message: "Incorrect Password",
+            status: 202,
+          });
         }
       }
     } catch (err) {
@@ -101,8 +109,8 @@ router.post(
 
 router.get("/verifyToken", (req, res) => {
   const authHeader = req.headers["authorization"];
-  console.log(authHeader)
-  const [bearer, token] = authHeader.split(' ');
+  console.log(authHeader);
+  const [bearer, token] = authHeader.split(" ");
   if (!token) {
     return res
       .status(401)
@@ -112,8 +120,10 @@ router.get("/verifyToken", (req, res) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded; // Set the user information from the decoded token to the request object
-    res.status(200).json({ 
-      status:200,message: "Previously logged in" });
+    res.status(200).json({
+      status: 200,
+      message: "Previously logged in",
+    });
   } catch (error) {
     return res.status(401).json({ status: 400, message: "Invalid token." });
   }
