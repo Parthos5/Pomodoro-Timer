@@ -385,6 +385,13 @@ h1 {
   opacity: 0.5;
 }
 
+/* profile tab */
+.profiletab{
+  width: 583.7px;
+  padding-left: 3vw;
+  padding-top: 10vh;
+  display: flex;
+}
 /* general tab starts */
 
 #generaltab {

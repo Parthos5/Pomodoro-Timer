@@ -29,6 +29,7 @@ window.onload = async () => {
     }
     else{
       console.log("auth verified")
+      console.log(test)
       if(!test.remember){
         console.log("remember me false")
         localStorage.clearitem("authToken")
@@ -112,9 +113,11 @@ let login = document.getElementById("login");
 let general = document.getElementById("generaltab");
 let timer = document.getElementById("timertab");
 let notification = document.getElementById("notificationtab");
+let profile = document.getElementById("profiletab")
 let timerset = document.getElementById("timerset");
 let generalset = document.getElementById("generalset");
-let notificationset = document.getElementById("notificationset"); //initialsing the buttons
+let notificationset = document.getElementById("notificationset"); 
+let profileset = document.getElementById("profileset")//initialsing the buttons
 
 function opensettings() {
   settings.style.visibility = "visible";
@@ -127,11 +130,13 @@ function opensettings() {
   general.style.display = "block";
   timer.style.display = "none";
   notification.style.display = "none";
+  profile.style.display = "none"
   timerset.setAttribute("style", `background-color:transparent;color: white;`);
   notificationset.setAttribute(
     "style",
     `background-color:transparent;color: white;`
   );
+  profileset.setAttribute("style", `background-color:transparent;color: white;`);
 }
 
 //function for login and register popup

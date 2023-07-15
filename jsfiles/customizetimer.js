@@ -8,10 +8,12 @@ function showtabinfo(e){
     let general = document.getElementById("generaltab");
     let timer = document.getElementById("timertab");
     let notification = document.getElementById("notificationtab");
+    let profile = document.getElementById("profiletab")
 
     let timerset = document.getElementById("timerset");
     let generalset = document.getElementById("generalset")
-    let notificationset = document.getElementById("notificationset"); //initialsing the buttons
+    let notificationset = document.getElementById("notificationset");
+    let profileset = document.getElementById("profileset") //initialsing the buttons
 
     let current = e.id;
     //initialsing the minutes and seconds
@@ -23,11 +25,13 @@ function showtabinfo(e){
         generalset.setAttribute("style", `background-color:white;color: rgba(52,55,83,1);`);
         timerset.setAttribute("style", `background-color:transparent;color: white;`);
         notificationset.setAttribute("style", `background-color:transparent;color: white;`);
+        profileset.setAttribute("style", `background-color:transparent;color: white;`);
 
         //displaying and erasing other info accordingly
         general.style.display = "block";
         timer.style.display = "none";
         notification.style.display= "none";
+        profile.style.display = "none"
     }
     else if(current == "timerset")
     {
@@ -39,15 +43,31 @@ function showtabinfo(e){
         timerset.setAttribute("style", `background-color:white;color: rgba(52,55,83,1);`);
         generalset.setAttribute("style", `background-color:transparent;color: white;`);
         notificationset.setAttribute("style", `background-color:transparent;color: white;`);
+        profileset.setAttribute("style", `background-color:transparent;color: white;`);
 
         //displaying and erasing other info accordingly
         timer.style.display = "flex";
         general.style.display = "none";
         notification.style.display= "none";
+        profile.style.display= "none";
+
         setTimeout(function() {
             timer.classList.add("fadedesc")
           }, 700);
 
+    }
+    else if(current == "profileset"){
+      //coloring btns white and transparent accordingly
+      profileset.setAttribute("style", `background-color:white;color: rgba(52,55,83,1);`);
+      generalset.setAttribute("style", `background-color:transparent;color: white;`);
+      timerset.setAttribute("style", `background-color:transparent;color: white;`);
+      notificationset.setAttribute("style", `background-color:transparent;color: white;`);
+
+      //displaying and erasing other info accordingly
+      timer.style.display = "none";
+      general.style.display = "none";
+      profile.style.display= "block";
+      notification.style.display = "none";
     }
     else
     {
@@ -55,11 +75,13 @@ function showtabinfo(e){
         notificationset.setAttribute("style", `background-color:white;color: rgba(52,55,83,1);`);
         generalset.setAttribute("style", `background-color:transparent;color: white;`);
         timerset.setAttribute("style", `background-color:transparent;color: white;`);
+        profileset.setAttribute("style", `background-color:transparent;color: white;`);
 
         //displaying and erasing other info accordingly
         timer.style.display = "none";
         general.style.display = "none";
         notification.style.display= "block";
+        profile.style.display = "none";
     }
 
     //pushing the updated settings into the localstorqage

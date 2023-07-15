@@ -120,10 +120,11 @@ router.get("/verifyToken", (req, res) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded; // Set the user information from the decoded token to the request object
+    console.log(decoded.user.remember)
     res.status(200).json({
       status: 200,
       message: "Verified User",
-      remember: decoded.remember ? true : false
+      remember: decoded.user.remember ? true : false
     })
   } catch (error) {
     return res.status(401).json({ status: 400, message: "Invalid token." });
