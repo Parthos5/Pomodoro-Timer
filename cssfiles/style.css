@@ -236,7 +236,7 @@ h1 {
 }
 
 #login {
-  display: flex;
+  display: flex !important;
   align-items: center;
   flex-direction: column;
   padding-top: 40px;
@@ -337,6 +337,23 @@ h1 {
 
 .default:hover {
   background-color: #dc3545;
+  color: white;
+}
+
+.logout{
+  padding: 10px;
+  background-color: transparent;
+  color: #C04CFD;
+  border: 1px #C04CFD solid;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  font-weight: 550;
+  letter-spacing: 0.5px;
+}
+
+.logout:hover{
+  background-color: #C04CFD;
   color: white;
 }
 

@@ -175,10 +175,12 @@ async function loginset() {
   }
 }
 
-function loginopen() {
+function loginopen(){
+  console.log("in loginopen function")
   login.style.visibility = "visible";
   login.classList.toggle("show");
   login.classList.remove("hide");
+  login.style.display = "flex !important"
 }
 
 function registeruser(){
@@ -212,4 +214,45 @@ let streaks = [numericdate, 0, 0, 0, 0, 0, 0, 0];
 function updatestreaks() {
   streaks[today - 1] += 1;
   localStorage.setItem("streaks", JSON.stringify(streaks));
+}
+
+//logout feature
+function logout(){
+  console.log("in logout func")
+  let openlogin = verifyToken();
+  if(openlogin){
+    console.log("opening login popup")
+    closesettings();
+    loginopen();
+  }
+  else{
+    console.log("fuction going as planneds")
+  }
+}
+
+//verify token general function
+async function verifyToken(){
+  let openlogin
+  let authToken = localStorage.getItem("authToken");
+  if(!authToken){
+    openlogin = true
+    return openlogin
+  }
+  else{
+    let test = await fetch("http://localhost:5000/verifyToken",{
+      headers:{
+        Authorization:"Bearer "+authToken
+      }
+    }).then((res)=>res.json());
+    if(test.status == 400){
+      openlogin = true
+      return openlogin
+    }
+    else{
+      console.log("auth verified")
+      console.log(test)
+      openlogin = false
+      return openlogin
+    }
+  }
 }
