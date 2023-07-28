@@ -107,18 +107,18 @@ router.post(
   }
 );
 
-router.get("/verifyToken", (req, res) => {
+router.get("/verifyToken",async (req, res) => {
   const authHeader = req.headers["authorization"];
   console.log(authHeader);
   const [bearer, token] = authHeader.split(" ");
   if (!token) {
     return res
-      .status(401)
-      .json({ error: 404, message: "Access denied. No token provided." });
+      .status(400)
+      .json({ error: 400, message: "Access denied. No token provided." });
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = await jwt.verify(token, JWT_SECRET);
     req.user = decoded; // Set the user information from the decoded token to the request object
     console.log(decoded.user.remember)
     res.status(200).json({

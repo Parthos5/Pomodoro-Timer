@@ -217,25 +217,29 @@ function updatestreaks() {
 }
 
 //logout feature
-function logout(){
+async function logout(){
   console.log("in logout func")
-  let openlogin = verifyToken();
+  //openlogin == true means autToken is invalid
+  let openlogin = await verifyToken();
   if(openlogin){
     console.log("opening login popup")
     closesettings();
-    loginopen();
+    window.location.reload();
   }
   else{
-    console.log("fuction going as planneds")
+    closesettings();
+    localStorage.removeItem("authToken")
+    loginopen()
   }
 }
 
 //verify token general function
 async function verifyToken(){
   let openlogin
-  let authToken = localStorage.getItem("authToken");
+  let authToken = await localStorage.getItem("authToken");
   if(!authToken){
     openlogin = true
+    console.log("no auth token")
     return openlogin
   }
   else{
@@ -244,6 +248,7 @@ async function verifyToken(){
         Authorization:"Bearer "+authToken
       }
     }).then((res)=>res.json());
+    console.log(test)
     if(test.status == 400){
       openlogin = true
       return openlogin
