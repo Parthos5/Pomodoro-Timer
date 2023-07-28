@@ -107,7 +107,7 @@ router.post(
   }
 );
 
-router.get("/verifyToken",async (req, res) => {
+router.get("/verifyToken", async (req, res) => {
   const authHeader = req.headers["authorization"];
   console.log(authHeader);
   const [bearer, token] = authHeader.split(" ");
@@ -120,12 +120,12 @@ router.get("/verifyToken",async (req, res) => {
   try {
     const decoded = await jwt.verify(token, JWT_SECRET);
     req.user = decoded; // Set the user information from the decoded token to the request object
-    console.log(decoded.user.remember)
+    console.log(decoded.user.remember);
     res.status(200).json({
       status: 200,
       message: "Verified User",
-      remember: decoded.user.remember ? true : false
-    })
+      remember: decoded.user.remember ? true : false,
+    });
   } catch (error) {
     return res.status(401).json({ status: 400, message: "Invalid token." });
   }
