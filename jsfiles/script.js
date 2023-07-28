@@ -1,5 +1,6 @@
 let workTittle = document.getElementById("work");
 let breakTittle = document.getElementById("break");
+const overlay = document.getElementById('overlay');
 localStorage.setItem("timer", JSON.stringify([25, 5]));
 let timersettings = JSON.parse(localStorage.getItem("timer"));
 console.log(timersettings[0]); //WORKTIME
@@ -29,10 +30,10 @@ window.onload = async () => {
     }
     else{
       console.log("auth verified")
-      console.log(test)
-      if(!test.remember){
+      console.log(test.remember)
+      if(test.remember === false){
         console.log("remember me false")
-        localStorage.clearitem("authToken")
+        localStorage.removeItem("authToken")
         loginopen();
       }
     }
@@ -158,10 +159,11 @@ async function loginset() {
   console.log(resp)
   console.log(resp.status);
   if (resp.status == 200) {
-    if(rememberinput){
+    // if(rememberinput){
       localStorage.setItem("authToken",resp.authToken)
-    }
+    // }
     login.style.visibility = "visible";
+    overlay.classList.toggle("whiteout");
     login.classList.toggle("show");
     login.classList.remove("hide");
   } else {
@@ -179,6 +181,7 @@ function loginopen(){
   console.log("in loginopen function")
   login.style.visibility = "visible";
   login.classList.toggle("show");
+  overlay.classList.toggle("blackout")
   login.classList.remove("hide");
   login.style.display = "flex !important"
 }
