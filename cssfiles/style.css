@@ -256,14 +256,16 @@ h1 {
   display: none; /* Initially hidden */
   z-index: 99; /* Set a high z-index to place it above other elements */
   /* transition: display 1s; */
-  transition: display 1s ease,
+  transition: opacity 1s ease,
 }
 
 .overlay.blackout{
+  opacity:0.6;
   display: block;
 }
 .overlay.whiteout{
-  display: none;
+  opacity: 0;
+  display: none; /* Initially hidden */
 }
 
 .loginsettings{

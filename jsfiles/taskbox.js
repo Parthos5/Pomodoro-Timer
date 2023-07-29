@@ -1,3 +1,10 @@
+const BACKEND_URL = "http://localhost:5000/getTasks"
+const authToken = localStorage.getItem("authToken")
+if(authToken){
+  // console.log(authToken)
+  console.log("executing get tasks")
+  getTasks()
+}
 const currentDate = new Date();
 // Get the day of the month (1-31)
 const dayOfMonth = currentDate.getDate();
@@ -52,6 +59,23 @@ function updateClock() {
   }
 
   setInterval(updateClock, 1000);
+
+//fetch tasks from db
+async function getTasks(){
+  console.log("in get tasks funcn")
+  let tasks = await fetch("http://localhost:5000/getTasks",{
+    method:"POST",
+    headers:{
+      'Content-Type':"application/json"
+    },
+    body:JSON.stringify({
+      authToken
+    })
+  }).then((res)=>res.json());
+  console.log(tasks)
+  console.log("oooooyyoo")
+} 
+
 
 //adding a task feature
 let addcontainer = document.getElementById("addcontainer");
