@@ -4,6 +4,8 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM";
 
+
+//fetch tasks
 router.post("/getTasks", async (req, res) => {
   const { authToken } = req.body;
 

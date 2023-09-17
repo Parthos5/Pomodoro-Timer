@@ -63,6 +63,7 @@ function updateClock() {
 //fetch tasks from db
 async function getTasks(){
   console.log("in get tasks funcn")
+  let taskdiv = document.getElementById("tasks");
   let tasks = await fetch("http://localhost:5000/getTasks",{
     method:"POST",
     headers:{
@@ -72,8 +73,35 @@ async function getTasks(){
       authToken
     })
   }).then((res)=>res.json());
-  console.log(tasks)
-  console.log("oooooyyoo")
+  let tasksArr = tasks.tasks;
+  // console.log(tasksArr);
+  // tasksArr.map((task)=>{
+  //     `<div id="element" class="element">
+  //     <label class="containercheck">
+  //       <input type="checkbox">
+  //       <div class="checkmark"></div>
+  //     </label>
+  //     <p id="mytask">${task.description}</p>
+  //     <img src="../icons/red-flag.png" id="flag" alt="">
+  //     <img src="../icons/more.png" id="more" class="more" alt="">
+  //   </div>`;
+    console.log(tasksArr)
+    for(let i =0;i<tasksArr.length;i++){
+      taskdiv.innerHTML += `
+      <div id="element" class="element">
+      <label class="containercheck">
+      <input type="checkbox">
+      <div class="checkmark"></div>
+    </label>
+    <p id="mytask">${tasksArr[i].description}</p>
+    <img src="../icons/red-flag.png" id="flag" alt="">
+    <img src="../icons/more.png" id="more" class="more" alt="">
+    </div>`;
+    }
+  // taskdiv.innerHTML = tasksArr[0]
+  
+
+  
 } 
 
 
@@ -86,61 +114,6 @@ addtaskbtn.addEventListener("click",function(){
   addcontainer.style.display = "block";
   addtaskbtn.style.display = "none";
 })
-
-// //select priority part
-// priorityctr = 0;
-// let options = document.getElementById("options");
-// let p1 = document.getElementById("p1");
-// let p2 = document.getElementById("p2");
-// let p3 = document.getElementById("p3");
-// let p4 = document.getElementById("p4");
-
-// function priority(e) {
-//   let selectedpr = e.querySelector("p").innerHTML;
-//   finalpriority = selectedpr; //priority is stored here for use in other functions
-//   // let p1 = document.getElementById("p1");
-//   // let p2 = document.getElementById("p2");
-//   // let p3 = document.getElementById("p3");
-//   // let p4 = document.getElementById("p4");
-
-//   console.log(selectedpr);
-//   let cid = e.id;
-//   let idcid = document.getElementById(cid);
-//   console.log(idcid);
-
-//   if(cid == "p1")
-//   {
-//     p1.style.backgroundColor = "#47da99"
-//     p2.style.backgroundColor = "whitesmoke"
-//     p3.style.backgroundColor = "whitesmoke"
-//     p4.style.backgroundColor = "whitesmoke"
-//     priorityctr = 1;
-//   }
-//   else if(cid == "p2")
-//   {
-//     p1.style.backgroundColor = "whitesmoke"
-//     p2.style.backgroundColor = "#47da99"
-//     p3.style.backgroundColor = "whitesmoke"
-//     p4.style.backgroundColor = "whitesmoke"
-//     priorityctr = 1;
-//   }
-//   else if(cid == "p3")
-//   {
-//     p1.style.backgroundColor = "whitesmoke"
-//     p2.style.backgroundColor = "whitesmoke"
-//     p3.style.backgroundColor = "#47da99"
-//     p4.style.backgroundColor = "whitesmoke"
-//     priorityctr = 1;
-//   }
-//   else if(cid == "p4")
-//   {
-//     p1.style.backgroundColor = "whitesmoke"
-//     p2.style.backgroundColor = "whitesmoke"
-//     p3.style.backgroundColor = "whitesmoke"
-//     p4.style.backgroundColor = "#47da99"
-//     priorityctr = 1;
-//   }
-// }
 
 //cancel adding the task
 let cancel = document.getElementById("cancel");
