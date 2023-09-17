@@ -153,6 +153,7 @@
     margin-right: 20px;
 }
 
+
 /* add task container starts */
 .addcontainer{
     position: relative;
@@ -167,14 +168,15 @@
 }
 
 #entertask{
-    width: 50vw;
+    width: 20vw;
     height: 5vh;
     border: none;
-    background-color: #d7dee4;
+    background-color: transparent;
     font-size: 18px;
     outline: none;
     padding: 0px 8px;
     transition: box-shadow 0.2s;
+    color: aliceblue;
 }
 
 #entertask:active{
@@ -227,3 +229,57 @@
     border-radius: 5px;
     /* background: red; */
 }
+/* add task btn */
+.btn {
+    width: 6vw;
+    height: 5vh;
+    border: 2px solid #17C3B2;
+    position: relative;
+    overflow: hidden;
+    background-color: transparent;
+    text-align: center;
+    /* text-transform: uppercase; */
+    font-size: 16px;
+    transition: .3s;
+    z-index: 1;
+    font-family: inherit;
+    color: #17C3B2;
+    cursor: pointer;
+   }
+   
+   .btn::before {
+    content: '';
+    width: 0;
+    height: 300%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: #17C3B2;
+    transition: .5s ease;
+    display: block;
+    z-index: -1;
+   }
+   
+   .btn:hover::before {
+    width: 105%;
+   }
+   
+   .btn:hover {
+    color: #111;
+   }
+   
+.dateandbtns{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.addbtns{
+    display: flex;
+    column-gap: 2vw;
+    padding-right: 6vw;
+    cursor: pointer;
+}
+
+/* add task container ends */
