@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+// const jwt = require("jsonwebtoken");
+// const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM";
 const {
   query,
   body,
@@ -11,8 +13,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM";
 
-router.post(
-  "/register",
+router.post("/register",
   body("email", "Please enter a valid Email ID").isEmail(),
   body("password", "Password should be minimum 5 characters").isLength({
     min: 5,
@@ -46,8 +47,7 @@ router.post(
   }
 );
 
-router.post(
-  "/login",
+router.post("/login",
   body("email", "Please enter a valid Email ID").isEmail(),
   async (req, res) => {
     const errors = validationResult(req);
@@ -130,5 +130,30 @@ router.get("/verifyToken", async (req, res) => {
     return res.status(401).json({ status: 400, message: "Invalid token." });
   }
 });
+
+router.post("/getUser", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(401).json({ error: "JWT token is missing" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userInfo = decoded.user;
+
+    const user = await User.findOne({ _id: userInfo.id });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ User: user });
+  } catch (error) {
+    console.error("JWT verification error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 module.exports = router;
