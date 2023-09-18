@@ -63,6 +63,7 @@ setInterval(updateClock, 1000);
 async function getTasks() {
   console.log("in get tasks funcn");
   let taskdiv = document.getElementById("tasks");
+  let todos = document.getElementById("todos");
   let tasks = await fetch("http://localhost:5000/getTasks", {
     method: "POST",
     headers: {
@@ -73,17 +74,17 @@ async function getTasks() {
     }),
   }).then((res) => res.json());
   let tasksArr = tasks.tasks;
-
+  // let img = `<img src="../icons/${tasksArr.priority}-flag.png" id="flag" alt="">`;
   console.log(tasksArr);
   for (let i = 0; i < tasksArr.length; i++) {
-    taskdiv.innerHTML += `
+    todos.innerHTML += `
       <div id="element" class="element">
       <label class="containercheck">
       <input type="checkbox">
       <div class="checkmark"></div>
     </label>
     <p id="mytask">${tasksArr[i].description}</p>
-    <img src="../icons/red-flag.png" id="flag" alt="">
+    <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
     <img src="../icons/more.png" id="more" class="more" alt="">
     </div>`;
   }
@@ -111,20 +112,26 @@ function handleAddTask() {
 //cancel adding the task
 function handleCancel() {
   let cancel = document.getElementById("cancel");
+  let addtaskbtn = document.getElementById("addtask");
+
   addcontainer.style.display = "none";
   addtaskbtn.style.display = "flex";
-};
+}
 
 //add the task to the database and page
 let addthetask = document.getElementById("addthetask");
 let taskinput = document.getElementById("entertask");
 let dateinput = document.getElementById("dateaddtask");
 let todos = document.getElementById("todos");
+let priorityctr = 0;
 
 let originalColor = document.getElementById("p1").style.backgroundColor;
 
 //final step of clicking add the task button
 addthetask.addEventListener("click", function () {
+  let addtaskbtn = document.getElementById("addtask");
+  let todos = document.getElementById("todos");
+
   console.log(priorityctr);
   console.log(taskinput.value);
   console.log(dateinput.value);
@@ -177,15 +184,16 @@ addthetask.addEventListener("click", function () {
       img = `<img src="../icons/grey-flag.png" id="flag" alt="">`;
     }
     console.log(finalpriority);
-    todos.innerHTML += `<div class="element">
-    <label class="containercheck">
-        <input type="checkbox">
-        <div class="checkmark"></div>
-    </label>
-    <p id="mytask">${taskinput.value}</p>
-    ${img}
-    <p>${formatteddate}</p>
-</div>`;
+    todos.innerHTML += `
+<div id="element" class="element">
+          <label class="containercheck">
+            <input type="checkbox">
+            <div class="checkmark"></div>
+          </label>
+          <p id="mytask">${taskinput.value}</p>
+          ${img}
+          <img src="../icons/more.png" id="more" class="more" alt="">
+        </div>`;
     addcontainer.style.display = "none";
     addtaskbtn.style.display = "flex";
     taskinput.value = "";
@@ -196,3 +204,54 @@ addthetask.addEventListener("click", function () {
     p4.style.backgroundColor = "whitesmoke";
   }
 });
+
+function priority(e) {
+  let selectedpr = e.querySelector("p").innerHTML;
+  finalpriority = selectedpr; //priority is stored here for use in other functions
+  // let p1 = document.getElementById("p1");
+  // let p2 = document.getElementById("p2");
+  // let p3 = document.getElementById("p3");
+  // let p4 = document.getElementById("p4");
+
+  console.log(selectedpr);
+  let cid = e.id;
+  let idcid = document.getElementById(cid);
+  console.log(idcid);
+
+  if (cid == "p1") {
+    p1.style.backgroundColor = "#47da99";
+    p2.style.backgroundColor = "whitesmoke";
+    p3.style.backgroundColor = "whitesmoke";
+    p4.style.backgroundColor = "whitesmoke";
+    priorityctr = 1;
+  } else if (cid == "p2") {
+    p1.style.backgroundColor = "whitesmoke";
+    p2.style.backgroundColor = "#47da99";
+    p3.style.backgroundColor = "whitesmoke";
+    p4.style.backgroundColor = "whitesmoke";
+    priorityctr = 1;
+  } else if (cid == "p3") {
+    p1.style.backgroundColor = "whitesmoke";
+    p2.style.backgroundColor = "whitesmoke";
+    p3.style.backgroundColor = "#47da99";
+    p4.style.backgroundColor = "whitesmoke";
+    priorityctr = 1;
+  } else if (cid == "p4") {
+    p1.style.backgroundColor = "whitesmoke";
+    p2.style.backgroundColor = "whitesmoke";
+    p3.style.backgroundColor = "whitesmoke";
+    p4.style.backgroundColor = "#47da99";
+    priorityctr = 1;
+  }
+}
+
+function convertdate(date) {
+  // split the date string into an array
+  const dateArray = date.split("-");
+
+  // rearrange the values in the array to the desired format
+  const formattedDate = dateArray[2] + "-" + dateArray[1] + "-" + dateArray[0];
+
+  console.log(formattedDate); // prints day-month-year format of the date
+  return formattedDate;
+}

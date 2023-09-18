@@ -100,6 +100,7 @@
         Focus Mode
       </button>
       <div id="tasks">
+        <div class="todos" id="todos"></div>
         <!-- <div id="element" class="element">
           <label class="containercheck">
             <input type="checkbox">
@@ -134,7 +135,7 @@
           <div class="dateandbtns">
               <input type="date" name="" id="dateaddtask">
               <div class="addbtns">
-                  <button id="cancel" class="sort">Cancel</button>
+                  <button id="cancel" onclick="handleCancel()" class="sort">Cancel</button>
                   <button id="addthetask" class="btn"> Add
                   </button>
               </div>
