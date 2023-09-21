@@ -15,18 +15,18 @@ router.post("/getTasks", async (req, res) => {
   try {
     const decoded = await jwt.verify(authToken, JWT_SECRET);
     if (!decoded) {
-      res.status(400).json({ Error: "Auth token not verified" });
+      return res.status(400).json({ Error: "Auth token not verified" });
     }
     let userInfo = decoded.user;
     let user = await User.findOne({ _id: userInfo.id });
     // console.log(tasks.tasks)
     if (!user) {
-      res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
     let tasks = user.tasks;
-    res.status(200).json({ message: "success", tasks });
+    return res.status(200).json({ message: "success", tasks });
   } catch (err) {
-    res.status(400).json({ Error: err });
+    return res.status(400).json({ Error: err });
   }
 });
 
@@ -38,6 +38,9 @@ router.post("/addTask", async (req, res) => {
   }
   if(!task){
     res.status(400).json({error:"Missing information sent in task object"})
+  }
+  if(!task.description){
+    res.status(400).json({error:"missing description"})
   }
 
   try {

@@ -73,7 +73,8 @@ async function getTasks() {
       authToken,
     }),
   }).then((res) => res.json());
-  let tasksArr = tasks.tasks;
+  if(tasks.tasks){
+    let tasksArr = tasks.tasks;
   // let img = `<img src="../icons/${tasksArr.priority}-flag.png" id="flag" alt="">`;
   console.log(tasksArr);
   for (let i = 0; i < tasksArr.length; i++) {
@@ -87,6 +88,7 @@ async function getTasks() {
     <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
     <img src="../icons/more.png" id="more" class="more" alt="">
     </div>`;
+  }
   }
   taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
     <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
@@ -128,10 +130,11 @@ let priorityctr = 0;
 let originalColor = document.getElementById("p1").style.backgroundColor;
 
 //final step of clicking add the task button
-addthetask.addEventListener("click", function () {
+addthetask.addEventListener("click", async function () {
   let addtaskbtn = document.getElementById("addtask");
   let todos = document.getElementById("todos");
-
+  let description = taskinput.value
+  let priority;
   console.log(priorityctr);
   console.log(taskinput.value);
   console.log(dateinput.value);
@@ -176,12 +179,16 @@ addthetask.addEventListener("click", function () {
     let img;
     if (finalpriority == "Priority 1") {
       img = `<img src="../icons/red-flag.png" id="flag" alt="">`;
+      priority = "red";
     } else if (finalpriority == "Priority 2") {
       img = `<img src="../icons/yellow-flag.png" id="flag" alt="">`;
+      priority = "yellow";
     } else if (finalpriority == "Priority 3") {
       img = `<img src="../icons/blue-flag.png" id="flag" alt="">`;
+      priority = "blue";
     } else {
       img = `<img src="../icons/grey-flag.png" id="flag" alt="">`;
+      priority = "grey";
     }
     console.log(finalpriority);
     todos.innerHTML += `
@@ -203,6 +210,20 @@ addthetask.addEventListener("click", function () {
     p3.style.backgroundColor = "whitesmoke";
     p4.style.backgroundColor = "whitesmoke";
   }
+
+  let resp = await fetch("http://localhost:5000/addTask",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+        authToken:authToken,
+        task:{
+          description:description,
+          priority:priority
+        } 
+    })
+  }).then((ans)=>ans.json()).then((data)=>console.log(data))
 });
 
 function priority(e) {
