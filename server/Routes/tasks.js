@@ -14,8 +14,8 @@ router.post("/getTasks", async (req, res) => {
 
   try {
     const decoded = await jwt.verify(authToken, JWT_SECRET);
-    if (!decoded) {
-      return res.status(400).json({ Error: "Auth token not verified" });
+    if (!decoded){
+      return res.status(400).json({ Error: "Auth token not generated" });
     }
     let userInfo = decoded.user;
     let user = await User.findOne({ _id: userInfo.id });

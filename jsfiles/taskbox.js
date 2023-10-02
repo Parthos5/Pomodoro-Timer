@@ -73,12 +73,12 @@ async function getTasks() {
       authToken,
     }),
   }).then((res) => res.json());
-  if(tasks.tasks){
+  if (tasks.tasks) {
     let tasksArr = tasks.tasks;
-  // let img = `<img src="../icons/${tasksArr.priority}-flag.png" id="flag" alt="">`;
-  console.log(tasksArr);
-  for (let i = 0; i < tasksArr.length; i++) {
-    todos.innerHTML += `
+    // let img = `<img src="../icons/${tasksArr.priority}-flag.png" id="flag" alt="">`;
+    console.log(tasksArr);
+    for (let i = 0; i < tasksArr.length; i++) {
+      todos.innerHTML += `
       <div id="element" class="element">
       <label class="containercheck">
       <input type="checkbox">
@@ -88,7 +88,7 @@ async function getTasks() {
     <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
     <img src="../icons/more.png" id="more" class="more" alt="">
     </div>`;
-  }
+    }
   }
   taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
     <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
@@ -133,7 +133,7 @@ let originalColor = document.getElementById("p1").style.backgroundColor;
 addthetask.addEventListener("click", async function () {
   let addtaskbtn = document.getElementById("addtask");
   let todos = document.getElementById("todos");
-  let description = taskinput.value
+  let description = taskinput.value;
   let priority;
   console.log(priorityctr);
   console.log(taskinput.value);
@@ -211,19 +211,21 @@ addthetask.addEventListener("click", async function () {
     p4.style.backgroundColor = "whitesmoke";
   }
 
-  let resp = await fetch("http://localhost:5000/addTask",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
+  let resp = await fetch("http://localhost:5000/addTask", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-    body:JSON.stringify({
-        authToken:authToken,
-        task:{
-          description:description,
-          priority:priority
-        } 
-    })
-  }).then((ans)=>ans.json()).then((data)=>console.log(data))
+    body: JSON.stringify({
+      authToken: authToken,
+      task: {
+        description: description,
+        priority: priority,
+      },
+    }),
+  })
+    .then((ans) => ans.json())
+    .then((data) => console.log(data));
 });
 
 function priority(e) {
