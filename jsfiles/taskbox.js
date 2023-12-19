@@ -1,9 +1,10 @@
 const BACKEND_URL = "http://localhost:5000/getTasks";
 const authToken = localStorage.getItem("authToken");
+let tasksArrMain;
 if (authToken) {
   // console.log(authToken)
   console.log("executing get tasks");
-  getTasks();
+  renderTasks();
 }
 const currentDate = new Date();
 // Get the day of the month (1-31)
@@ -60,10 +61,7 @@ function updateClock() {
 setInterval(updateClock, 1000);
 
 //fetch tasks from db
-async function getTasks() {
-  console.log("in get tasks funcn");
-  let taskdiv = document.getElementById("tasks");
-  let todos = document.getElementById("todos");
+async function fetchTasks() {
   let tasks = await fetch("http://localhost:5000/getTasks", {
     method: "POST",
     headers: {
@@ -73,21 +71,42 @@ async function getTasks() {
       authToken,
     }),
   }).then((res) => res.json());
-  if (tasks.tasks) {
-    let tasksArr = tasks.tasks;
-    // let img = `<img src="../icons/${tasksArr.priority}-flag.png" id="flag" alt="">`;
-    console.log(tasksArr);
+  console.log(tasks.tasks)
+  return tasks.tasks;
+}
+
+//render tasks from db
+async function renderTasks() {
+  let taskdiv = document.getElementById("tasks");
+  let tasksArr = await fetchTasks();
+  tasksArrMain = tasksArr;
+  if (tasksArr) {
+    // console.log(tasksArr);
     for (let i = 0; i < tasksArr.length; i++) {
-      todos.innerHTML += `
+      console.log(tasksArr[i]._id);
+      if (!tasksArr[i].completed) {
+        todos.innerHTML += `
       <div id="element" class="element">
       <label class="containercheck">
-      <input type="checkbox">
+      <input type="checkbox" onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed}),'${tasksArr[i]._id}'">
       <div class="checkmark"></div>
     </label>
-    <p id="mytask">${tasksArr[i].description}</p>
+    <p class="mytask" id="${tasksArr[i]._id}">${tasksArr[i].description}</p>
     <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
     <img src="../icons/more.png" id="more" class="more" alt="">
     </div>`;
+      } else {
+        todos.innerHTML += `
+      <div id="element" class="element">
+      <label class="containercheck">
+      <input type="checkbox" checked onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed},'${tasksArr[i]._id}')">
+      <div class="checkmark"></div>
+    </label>
+    <p class="mytask" style="text-decoration:line-through" id="${tasksArr[i]._id}">${tasksArr[i].description}</p>
+    <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
+    <img src="../icons/more.png" id="more" class="more" alt="">
+    </div>`;
+      }
     }
   }
   taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
@@ -97,6 +116,67 @@ async function getTasks() {
     <p>14-03-2023</p> -->
 </div>
 `;
+}
+
+async function genTasks(completed,taskId) {
+  console.log("in gentasks funcn");
+  // let tasksArr = await fetchTasks();
+  // let changedTasks;
+  // const foundTask = tasksArr.find((task) => task._id === taskId);
+  console.log(taskId);
+  const taskFoundDesc = document.getElementById(taskId)
+  if(completed){
+    if (taskFoundDesc) {
+      // Apply the text-decoration style
+      taskFoundDesc.style.textDecoration = "line-through";
+      console.log(taskFoundDesc);
+    } else {
+      console.log("Element not found with the specified taskId:", taskId);
+    }
+  }
+  else{
+    if (taskFoundDesc) {
+      // Apply the text-decoration style
+      taskFoundDesc.style.textDecoration = "none";
+      console.log(taskFoundDesc);
+    } else {
+      console.log("Element not found with the specified taskId:", taskId);
+    }
+  }
+  // console.log(taskFoundDesc)
+  // taskFoundDesc.style.textDecoration = "line-through"
+  // console.log(taskIndex)
+  // if (tasksArr) {
+  //   // console.log(tasksArr);
+  //   for (let i = 0; i < tasksArr.length; i++) {
+  //     changedTasks = "";
+  //     if (tasksArr[i].completed || taskId === tasksArr[i]._id) {
+  //       console.log("hello");
+  //       todos.innerHTML += `
+  //     <div id="element" class="element">
+  //     <label class="containercheck">
+  //     <input type="checkbox" onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed})">
+  //     <div class="checkmark"></div>
+  //   </label>
+  //   <p id="mytask"><s>${tasksArr[i].description}</s></p>
+  //   <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
+  //   <img src="../icons/more.png" id="more" class="more" alt="">
+  //   </div>`;
+  //     } else if (!tasksArr[i].completed || taskId === tasksArr[i]._id) {
+  //       changedTasks += `
+  //     <div id="element" class="element">
+  //     <label class="containercheck">
+  //     <input type="checkbox" checked onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed})">
+  //     <div class="checkmark"></div>
+  //   </label>
+  //   <p id="mytask">${tasksArr[i].description}</p>
+  //   <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
+  //   <img src="../icons/more.png" id="more" class="more" alt="">
+  //   </div>`;
+  //     }
+  //   }
+  //   todos.innerHTML = changedTasks;
+  // }
 }
 
 //adding a task feature
@@ -171,10 +251,10 @@ addthetask.addEventListener("click", async function () {
       dateinput.style.backgroundColor = "whitesmoke";
     }, 500);
   }
-
+  let formatteddate;
   // case of when every input field is chosen and task is added
   if (taskinput.value != "" && dateinput.value != "" && priorityctr === 1) {
-    let formatteddate = convertdate(dateinput.value); //retreiving correct format of date
+    formatteddate = dateinput.value; //retreiving correct format of date
     //retreiving priority
     let img;
     if (finalpriority == "Priority 1") {
@@ -191,13 +271,14 @@ addthetask.addEventListener("click", async function () {
       priority = "grey";
     }
     console.log(finalpriority);
+    // renderTasks()
     todos.innerHTML += `
 <div id="element" class="element">
           <label class="containercheck">
             <input type="checkbox">
             <div class="checkmark"></div>
           </label>
-          <p id="mytask">${taskinput.value}</p>
+          <p class="mytask">${taskinput.value}</p>
           ${img}
           <img src="../icons/more.png" id="more" class="more" alt="">
         </div>`;
@@ -221,6 +302,7 @@ addthetask.addEventListener("click", async function () {
       task: {
         description: description,
         priority: priority,
+        date: formatteddate,
       },
     }),
   })
@@ -277,4 +359,30 @@ function convertdate(date) {
 
   console.log(formattedDate); // prints day-month-year format of the date
   return formattedDate;
+}
+
+async function checkTask(task, completed, taskId) {
+  console.log(tasksArrMain);
+  if (completed) {
+    checked = "y";
+  } else {
+    checked = "n";
+  }
+  console.log(checked);
+  let resp = await fetch("http://localhost:5000/checkTasks", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      authToken: authToken,
+      taskDesc: task,
+      checked: checked,
+    }),
+  })
+    .then((ans) => ans.json())
+    .then((data) => {
+      console.log(taskId)
+      genTasks(completed,taskId);
+    });
 }
