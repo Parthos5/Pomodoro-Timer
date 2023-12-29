@@ -704,7 +704,7 @@ input:checked + .slider:before {
 
 /* css for focus mode btn */
 .focusbtn {
-  margin-top: 25px;
+  /* margin-top: 25px; */
   position: relative;
   padding: 10px 20px;
   border-radius: 7px;

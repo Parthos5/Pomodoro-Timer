@@ -69,9 +69,12 @@ async function fetchTasks() {
     },
     body: JSON.stringify({
       authToken,
+      date:"off",
+      priority:"off",
+      completed:"off"
     }),
   }).then((res) => res.json());
-  console.log(tasks.tasks)
+  console.log(tasks.tasks);
   return tasks.tasks;
 }
 
@@ -80,7 +83,7 @@ async function renderTasks() {
   let taskdiv = document.getElementById("tasks");
   let tasksArr = await fetchTasks();
   tasksArrMain = tasksArr;
-  if (tasksArr) {
+  if (tasksArr.length > 0) {
     // console.log(tasksArr);
     for (let i = 0; i < tasksArr.length; i++) {
       console.log(tasksArr[i]._id);
@@ -88,12 +91,12 @@ async function renderTasks() {
         todos.innerHTML += `
       <div id="element" class="element">
       <label class="containercheck">
-      <input type="checkbox" onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed}),'${tasksArr[i]._id}'">
+      <input type="checkbox" onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed},'${tasksArr[i]._id}') ">
       <div class="checkmark"></div>
     </label>
     <p class="mytask" id="${tasksArr[i]._id}">${tasksArr[i].description}</p>
     <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
-    <img src="../icons/more.png" id="more" class="more" alt="">
+    <img src="../icons/dustbin_white.png" onclick="deleteTask('${tasksArr[i]._id}')" id="dustbin${tasksArr[i]._id}" class="more" alt="">
     </div>`;
       } else {
         todos.innerHTML += `
@@ -104,28 +107,36 @@ async function renderTasks() {
     </label>
     <p class="mytask" style="text-decoration:line-through" id="${tasksArr[i]._id}">${tasksArr[i].description}</p>
     <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
-    <img src="../icons/more.png" id="more" class="more" alt="">
+    <img src="../icons/dustbin_white.png" onclick="deleteTask('${tasksArr[i]._id}')" id="dustbin${tasksArr[i]._id}" class="more" alt="">
     </div>`;
       }
     }
-  }
-  taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
+    taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
     <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
     <p id="mytask" class="addtasktext">Add a Task</p>
     <!-- <img src="../icons/red-flag.png" id="flag" alt="">
     <p>14-03-2023</p> -->
 </div>
 `;
+  } else {
+    taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
+    <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
+    <p id="mytask" class="addtasktext">Add a Task and organize your day</p>
+    <!-- <img src="../icons/red-flag.png" id="flag" alt="">
+    <p>14-03-2023</p> -->
+</div>
+`;
+  }
 }
 
-async function genTasks(completed,taskId) {
+async function genTasks(completed, taskId) {
   console.log("in gentasks funcn");
   // let tasksArr = await fetchTasks();
   // let changedTasks;
   // const foundTask = tasksArr.find((task) => task._id === taskId);
   console.log(taskId);
-  const taskFoundDesc = document.getElementById(taskId)
-  if(completed){
+  const taskFoundDesc = document.getElementById(taskId);
+  if (completed) {
     if (taskFoundDesc) {
       // Apply the text-decoration style
       taskFoundDesc.style.textDecoration = "line-through";
@@ -133,8 +144,7 @@ async function genTasks(completed,taskId) {
     } else {
       console.log("Element not found with the specified taskId:", taskId);
     }
-  }
-  else{
+  } else {
     if (taskFoundDesc) {
       // Apply the text-decoration style
       taskFoundDesc.style.textDecoration = "none";
@@ -143,40 +153,6 @@ async function genTasks(completed,taskId) {
       console.log("Element not found with the specified taskId:", taskId);
     }
   }
-  // console.log(taskFoundDesc)
-  // taskFoundDesc.style.textDecoration = "line-through"
-  // console.log(taskIndex)
-  // if (tasksArr) {
-  //   // console.log(tasksArr);
-  //   for (let i = 0; i < tasksArr.length; i++) {
-  //     changedTasks = "";
-  //     if (tasksArr[i].completed || taskId === tasksArr[i]._id) {
-  //       console.log("hello");
-  //       todos.innerHTML += `
-  //     <div id="element" class="element">
-  //     <label class="containercheck">
-  //     <input type="checkbox" onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed})">
-  //     <div class="checkmark"></div>
-  //   </label>
-  //   <p id="mytask"><s>${tasksArr[i].description}</s></p>
-  //   <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
-  //   <img src="../icons/more.png" id="more" class="more" alt="">
-  //   </div>`;
-  //     } else if (!tasksArr[i].completed || taskId === tasksArr[i]._id) {
-  //       changedTasks += `
-  //     <div id="element" class="element">
-  //     <label class="containercheck">
-  //     <input type="checkbox" checked onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed})">
-  //     <div class="checkmark"></div>
-  //   </label>
-  //   <p id="mytask">${tasksArr[i].description}</p>
-  //   <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
-  //   <img src="../icons/more.png" id="more" class="more" alt="">
-  //   </div>`;
-  //     }
-  //   }
-  //   todos.innerHTML = changedTasks;
-  // }
 }
 
 //adding a task feature
@@ -272,15 +248,14 @@ addthetask.addEventListener("click", async function () {
     }
     console.log(finalpriority);
     // renderTasks()
-    todos.innerHTML += `
-<div id="element" class="element">
-          <label class="containercheck">
-            <input type="checkbox">
-            <div class="checkmark"></div>
-          </label>
+    todos.innerHTML += `<div id="element" class="element"> 
+    <label class="containercheck">
+    <input type="checkbox">
+    <div class="checkmark"></div>
+    </label>
           <p class="mytask">${taskinput.value}</p>
           ${img}
-          <img src="../icons/more.png" id="more" class="more" alt="">
+          <img src="../icons/dustbin_white.png" id="more" class="more" alt="">
         </div>`;
     addcontainer.style.display = "none";
     addtaskbtn.style.display = "flex";
@@ -382,7 +357,57 @@ async function checkTask(task, completed, taskId) {
   })
     .then((ans) => ans.json())
     .then((data) => {
-      console.log(taskId)
-      genTasks(completed,taskId);
+      console.log(taskId);
+      genTasks(completed, taskId);
     });
+}
+
+async function deleteTask(taskId) {
+  let dustbin_img = document.getElementById("dustbin" + taskId);
+  let task = dustbin_img.parentElement;
+  console.log(task);
+  task.style.display = "none";
+
+  let resp = await fetch("http://localhost:5000/deleteTask", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      authToken,
+      taskId,
+    }),
+  }).then((res) => res.json());
+
+  console.log(resp);
+}
+
+$(document).ready(function () {
+  $('#prioritytaskfilter').select2({
+    templateResult: formatState,
+    templateSelection: formatState,
+  });
+});
+
+$(document).ready(function () {
+  $('#completetaskfilter').select2({
+    templateResult: formatState,
+    templateSelection: formatState,
+  });
+});
+
+
+function formatState(state) {
+  if (!state.id) {
+    return state.text;
+  }
+
+  var $state = $(
+    '<span style="display: flex; align-items: center;justify-"><img src="' +
+        state.element.getAttribute('data-image') +
+        '" class="img-flag" style="width: 18px; height:18px; margin-right: 5px;margin-top:4px" /> ' +
+        state.text +
+        '</span>'
+  );
+  return $state;
 }

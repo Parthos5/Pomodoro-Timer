@@ -1,15 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 const User = require("../models/User");
+const moment = require("moment-timezone");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM";
 
 //fetch tasks
 router.post("/getTasks", async (req, res) => {
-  const { authToken } = req.body;
+  const { authToken, date, priority,completed } = req.body;
 
   if (!authToken) {
-    res.status(400).json({ error: "No auth token found" });
+    return res.status(400).json({ error: "No auth token found" });
+  }
+  if (!date || !priority) {
+    return res.status(400).json({ error: "Insufficient date" });
   }
 
   try {
@@ -24,12 +29,30 @@ router.post("/getTasks", async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
     let prevtasks = user.tasks;
-    const redTasks = prevtasks.filter((task) => task.priority === "red");
-    const yellowTasks = prevtasks.filter((task) => task.priority === "yellow");
-    const blueTasks = prevtasks.filter((task) => task.priority === "blue");
-    const greyTasks = prevtasks.filter((task) => task.priority === "grey");
-    let tasks = [...redTasks,...yellowTasks,...blueTasks,...greyTasks]
-    console.log(tasks)
+    let finalTasks = user.tasks;
+
+    //  DATE FILTER
+    if (date != "off") {
+      finalTasks = await dateTasks(prevtasks, date);
+    }
+
+    // PRIORITY FILTER
+    if (priority != "off") {
+      finalTasks = await priorityTasks(finalTasks,priority)
+    }
+
+    // CHECK FILTER
+    if (completed != "off"){
+      finalTasks = await completedTasks(finalTasks,completed)
+    }
+
+    //ORDERING TASKS ACC TO PRIORITY
+    const redTasks = finalTasks.filter((task) => task.priority === "red");
+    const yellowTasks = finalTasks.filter((task) => task.priority === "yellow");
+    const blueTasks = finalTasks.filter((task) => task.priority === "blue");
+    const greyTasks = finalTasks.filter((task) => task.priority === "grey");
+    let tasks = [...redTasks, ...yellowTasks, ...blueTasks, ...greyTasks];
+    // console.log(tasks);
     return res.status(200).json({ message: "success", tasks });
   } catch (err) {
     return res.status(400).json({ Error: err });
@@ -109,43 +132,113 @@ router.post("/checkTasks", async (req, res) => {
   }
 });
 
-//filter tasks according to priority - can be single priority or all ordered
-router.post("/priorityTasks", async (req, res) => {
-  const { type, authToken } = req.body;
+//delete task
+router.post("/deleteTask", async (req, res) => {
+  const { authToken, taskId } = req.body;
+  console.log("hello");
   if (!authToken) {
     return res.status(400).json({ error: "No auth token found" });
   }
+  if (!taskId) {
+    return res.status(400).json("Missing task ID");
+  }
+
   try {
     const decoded = await jwt.verify(authToken, JWT_SECRET);
     if (!decoded) {
-      res.status(400).json({ Error: "Auth token not verified" });
+      return res.status(400).json({ Error: "Auth token not verified" });
     }
     let userInfo = decoded.user;
     let user = await User.findOne({ _id: userInfo.id });
     if (!user) {
-      res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
 
-    let prevtasks = user.tasks;
-    let tasks;
+    let tasks = user.tasks;
+    console.log("2nd hello");
 
-    if(type === "red"){
-      tasks = prevtasks.filter((task) => task.priority === "red")
+    const isValidObjectId = mongoose.Types.ObjectId.isValid(taskId);
+    if (!isValidObjectId) {
+      return res.status(400).json({ error: "Invalid task ID format" });
     }
-    else if(type === "yellow"){
-      tasks = prevtasks.filter((task) => task.priority === "yellow")
+    // const taskIdObj = mongoose.Types.ObjectId(taskId)
+    // if(!taskIdObj){
+    //   res.status(400).json({error:"no converting"})
+    // }
+    var ObjectId = require("mongodb").ObjectId;
+    let newTaskId = new ObjectId(taskId); // wrap in ObjectID
+    console.log("3rd hello");
+    console.log(newTaskId);
+    // console.log(taskIdObj)
+    let taskIndex = tasks.findIndex(
+      (task) => task._id.toString() === newTaskId.toString()
+    );
+    if (taskIndex === -1) {
+      return res.status(400).json({ message: "Task not found" });
     }
-    else if(type === "blue"){
-      tasks = prevtasks.filter((task) => task.priority === "blue")
-    }
-    else{
-      tasks = prevtasks.filter((task) => task.priority === "grey")
-    }
-    return res.status(200).json({message:'Success',tasks})
-    
+
+    tasks.splice(taskIndex, 1);
+    await user.save();
+    res.status(200).json({ message: "Success" });
   } catch (err) {
-    return res.status(500).json({ Error: err });
+    return res.status(500).json({ Error: err, message: "Error" });
   }
 });
+
+/*****TASK FILTERS*****/
+//filter tasks according to priority - can be single priority or all ordered
+async function priorityTasks(prevtasks, priority) {
+  let tasks;
+
+  if (priority === "red") {
+    tasks = prevtasks.filter((task) => task.priority === "red");
+  } else if (priority === "yellow") {
+    tasks = prevtasks.filter((task) => task.priority === "yellow");
+  } else if (priority === "blue") {
+    tasks = prevtasks.filter((task) => task.priority === "blue");
+  } else {
+    tasks = prevtasks.filter((task) => task.priority === "grey");
+  }
+  return tasks;
+}
+
+//filter tasks according to the date
+async function dateTasks(prevtasks, date) {
+  let tasks;
+  console.log("datemsg 1");
+  // Getting today's date
+  const tempToday = new Date();
+  console.log(tempToday);
+  // tempToday.setHours(0, 0, 0, 0);
+  const today = tempToday.toISOString().replace(/T.*$/, "T00:00:00.000Z");
+
+  // Compare the dates
+  if (date === "past3") {
+    tasks = prevtasks.filter(
+      (task) => task.date.toISOString().split("T")[0] < today.split("T")[0]
+    );
+  } else if (date === "future3") {
+    tasks = prevtasks.filter(
+      (task) => task.date.toISOString().split("T")[0] > today.split("T")[0]
+    );
+  } else {
+    tasks = prevtasks.filter(
+      (task) => task.date.toISOString().split("T")[0] === today.split("T")[0]
+    );
+  }
+  return tasks;
+}
+
+//filter tasks according to completion
+ async function completedTasks(prevtasks,completed){
+    let tasks;
+    if (completed) {
+      tasks = prevtasks.filter((task) => task.completed === true);
+    } else {
+      tasks = prevtasks.filter((task) => task.completed === false);
+    }
+    // console.log(tasks);
+    return tasks;
+};
 
 module.exports = router;
