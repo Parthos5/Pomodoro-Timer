@@ -1,10 +1,11 @@
 const BACKEND_URL = "http://localhost:5000/getTasks";
 const authToken = localStorage.getItem("authToken");
 let tasksArrMain;
+let addTaskBtn = false;
 if (authToken) {
   // console.log(authToken)
   console.log("executing get tasks");
-  renderTasks();
+  renderTasks("off", "off", "off");
 }
 const currentDate = new Date();
 // Get the day of the month (1-31)
@@ -61,7 +62,8 @@ function updateClock() {
 setInterval(updateClock, 1000);
 
 //fetch tasks from db
-async function fetchTasks() {
+async function fetchTasks(completed, date, priority) {
+  console.log(completed, date, priority);
   let tasks = await fetch("http://localhost:5000/getTasks", {
     method: "POST",
     headers: {
@@ -69,9 +71,9 @@ async function fetchTasks() {
     },
     body: JSON.stringify({
       authToken,
-      date:"off",
-      priority:"off",
-      completed:"off"
+      date,
+      priority,
+      completed,
     }),
   }).then((res) => res.json());
   console.log(tasks.tasks);
@@ -79,15 +81,23 @@ async function fetchTasks() {
 }
 
 //render tasks from db
-async function renderTasks() {
+async function renderTasks(completed, date, priority) {
+  let todos = document.getElementById("todos");
   let taskdiv = document.getElementById("tasks");
-  let tasksArr = await fetchTasks();
+  // let addtaskdiv = document.getElementById("addtask")
+  let tasksArr = await fetchTasks(completed, date, priority);
   tasksArrMain = tasksArr;
+  // console.log(tasksArr)
+  // addtaskdiv.innerHTML = ""
+  todos.innerHTML = "";
+
   if (tasksArr.length > 0) {
     // console.log(tasksArr);
     for (let i = 0; i < tasksArr.length; i++) {
       console.log(tasksArr[i]._id);
       if (!tasksArr[i].completed) {
+        console.log("inside rendering tasksArr");
+        // todos.innerHTML = "hello"
         todos.innerHTML += `
       <div id="element" class="element">
       <label class="containercheck">
@@ -99,6 +109,7 @@ async function renderTasks() {
     <img src="../icons/dustbin_white.png" onclick="deleteTask('${tasksArr[i]._id}')" id="dustbin${tasksArr[i]._id}" class="more" alt="">
     </div>`;
       } else {
+        // todos.innerHTML = `${completed}`
         todos.innerHTML += `
       <div id="element" class="element">
       <label class="containercheck">
@@ -111,29 +122,33 @@ async function renderTasks() {
     </div>`;
       }
     }
-    taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
+    if (addTaskBtn == false) {
+      taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
     <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
     <p id="mytask" class="addtasktext">Add a Task</p>
     <!-- <img src="../icons/red-flag.png" id="flag" alt="">
     <p>14-03-2023</p> -->
 </div>
 `;
+    }
   } else {
-    taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
+    if (addTaskBtn == false || tasksArr.length == 0) {
+      taskdiv.innerHTML = `
+      <div class="todos" id="todos"></div>
+      <div class="element" id="addtask" onclick="handleAddTask()">
     <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
     <p id="mytask" class="addtasktext">Add a Task and organize your day</p>
     <!-- <img src="../icons/red-flag.png" id="flag" alt="">
     <p>14-03-2023</p> -->
 </div>
 `;
+    }
   }
+  addTaskBtn = true;
 }
 
-async function genTasks(completed, taskId) {
+async function cutTasks(completed, taskId) {
   console.log("in gentasks funcn");
-  // let tasksArr = await fetchTasks();
-  // let changedTasks;
-  // const foundTask = tasksArr.find((task) => task._id === taskId);
   console.log(taskId);
   const taskFoundDesc = document.getElementById(taskId);
   if (completed) {
@@ -180,7 +195,7 @@ function handleCancel() {
 let addthetask = document.getElementById("addthetask");
 let taskinput = document.getElementById("entertask");
 let dateinput = document.getElementById("dateaddtask");
-let todos = document.getElementById("todos");
+// let todos = document.getElementById("todos");
 let priorityctr = 0;
 
 let originalColor = document.getElementById("p1").style.backgroundColor;
@@ -358,7 +373,7 @@ async function checkTask(task, completed, taskId) {
     .then((ans) => ans.json())
     .then((data) => {
       console.log(taskId);
-      genTasks(completed, taskId);
+      cutTasks(completed, taskId);
     });
 }
 
@@ -382,20 +397,20 @@ async function deleteTask(taskId) {
   console.log(resp);
 }
 
+//logic for task filter dropdowns
 $(document).ready(function () {
-  $('#prioritytaskfilter').select2({
+  $("#prioritytaskfilter").select2({
     templateResult: formatState,
     templateSelection: formatState,
   });
 });
 
 $(document).ready(function () {
-  $('#completetaskfilter').select2({
+  $("#completetaskfilter").select2({
     templateResult: formatState,
     templateSelection: formatState,
   });
 });
-
 
 function formatState(state) {
   if (!state.id) {
@@ -404,10 +419,40 @@ function formatState(state) {
 
   var $state = $(
     '<span style="display: flex; align-items: center;justify-"><img src="' +
-        state.element.getAttribute('data-image') +
-        '" class="img-flag" style="width: 18px; height:18px; margin-right: 5px;margin-top:4px" /> ' +
-        state.text +
-        '</span>'
+      state.element.getAttribute("data-image") +
+      '" class="img-flag" style="width: 18px; height:18px;margin-top:4px" /> ' +
+      state.text +
+      "</span>"
   );
   return $state;
 }
+
+let checked = document.getElementById("completetaskfilter");
+let flag = document.getElementById("prioritytaskfilter");
+let dateTask = document.getElementById("datetaskfilter");
+async function taskFilter() {
+  let checkedVal = checked.value;
+  let dateVal = dateTask.value;
+  let flagVal = flag.value;
+  let completed;
+
+  if (checkedVal != "off") {
+    completed = checkedVal === "complete" ? true : false;
+  } else {
+    completed = checkedVal;
+  }
+  console.log(checkedVal);
+  console.log(dateVal);
+  console.log(flagVal);
+  renderTasks(completed, dateVal, flagVal);
+}
+
+//login task load logic
+let loginBtn = document.getElementById("loginbtn");
+loginBtn.addEventListener("click", function () {
+  console.log("loginbtn task loading");
+  setTimeout(function () {
+    renderTasks("off", "off", "off");
+  }, 800);
+  // renderTasks("off","off","off");
+});

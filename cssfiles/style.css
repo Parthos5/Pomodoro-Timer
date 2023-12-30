@@ -155,7 +155,7 @@ h1 {
   align-items: center;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0.25rem;
+  border-radius: 7px;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
   color: rgba(0, 0, 0, 0.85);
@@ -175,8 +175,9 @@ h1 {
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: baseline;
-  width: auto;
-  margin-top: 5vh;
+  width: 132px;
+  height: 35px;
+  /* margin-top: 5vh; */
   cursor: pointer;
 }
 
@@ -777,6 +778,12 @@ input:checked + .slider:before {
   -webkit-transition: box-shadow 0.2s ease-in;
   -moz-transition: box-shadow 0.2s ease-in;
   transition: box-shadow 0.2s ease-in;
+}
+
+.SettingsAndFocus{
+  display: flex;
+  align-items: center;
+  margin-top: 5vh;
 }
 
 /* css for focus mode btn ends */

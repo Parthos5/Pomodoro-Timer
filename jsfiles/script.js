@@ -4,6 +4,7 @@ const overlay = document.getElementById('overlay');
 localStorage.setItem("timer", JSON.stringify([25, 5]));
 let timersettings = JSON.parse(localStorage.getItem("timer"));
 console.log(timersettings[0]); //WORKTIME
+let addTaskBtn2 = false;
 let workTime = timersettings[0];
 let breakTime = timersettings[1];
 let noti = document.getElementById("notificationsoundeffect");
@@ -140,8 +141,74 @@ function opensettings() {
   profileset.setAttribute("style", `background-color:transparent;color: white;`);
 }
 
-//function for login and register popup
 
+// async function renderTasks(completed, date, priority) {
+//   let todos = document.getElementById("todos");
+//   let taskdiv = document.getElementById("tasks");
+//   // let addtaskdiv = document.getElementById("addtask")
+//   let tasksArr = await fetchTasks(completed, date, priority);
+//   tasksArrMain = tasksArr;
+//   // console.log(tasksArr)
+//   // addtaskdiv.innerHTML = ""
+//   todos.innerHTML = "";
+
+//   if (tasksArr.length > 0) {
+//     // console.log(tasksArr);
+//     for (let i = 0; i < tasksArr.length; i++) {
+//       console.log(tasksArr[i]._id);
+//       if (!tasksArr[i].completed) {
+//         console.log("inside rendering tasksArr");
+//         // todos.innerHTML = "hello"
+//         todos.innerHTML += `
+//       <div id="element" class="element">
+//       <label class="containercheck">
+//       <input type="checkbox" onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed},'${tasksArr[i]._id}') ">
+//       <div class="checkmark"></div>
+//     </label>
+//     <p class="mytask" id="${tasksArr[i]._id}">${tasksArr[i].description}</p>
+//     <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
+//     <img src="../icons/dustbin_white.png" onclick="deleteTask('${tasksArr[i]._id}')" id="dustbin${tasksArr[i]._id}" class="more" alt="">
+//     </div>`;
+//       } else {
+//         // todos.innerHTML = `${completed}`
+//         todos.innerHTML += `
+//       <div id="element" class="element">
+//       <label class="containercheck">
+//       <input type="checkbox" checked onclick="checkTask('${tasksArr[i].description}',${tasksArr[i].completed},'${tasksArr[i]._id}')">
+//       <div class="checkmark"></div>
+//     </label>
+//     <p class="mytask" style="text-decoration:line-through" id="${tasksArr[i]._id}">${tasksArr[i].description}</p>
+//     <img src="../icons/${tasksArr[i].priority}-flag.png" id="flag" alt="">
+//     <img src="../icons/dustbin_white.png" onclick="deleteTask('${tasksArr[i]._id}')" id="dustbin${tasksArr[i]._id}" class="more" alt="">
+//     </div>`;
+//       }
+//     }
+//     if (addTaskBtn == false ) {
+//       taskdiv.innerHTML += `<div class="element" id="addtask" onclick="handleAddTask()">
+//     <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
+//     <p id="mytask" class="addtasktext">Add a Task</p>
+//     <!-- <img src="../icons/red-flag.png" id="flag" alt="">
+//     <p>14-03-2023</p> -->
+// </div>
+// `;
+//     }
+//   } else {
+//     if(addTaskBtn == false || tasksArr.length == 0){
+//       taskdiv.innerHTML = `
+//       <div class="todos" id="todos"></div>
+//       <div class="element" id="addtask" onclick="handleAddTask()">
+//     <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
+//     <p id="mytask" class="addtasktext">Add a Task and organize your day</p>
+//     <!-- <img src="../icons/red-flag.png" id="flag" alt="">
+//     <p>14-03-2023</p> -->
+// </div>
+// `;
+//     }
+//   }
+//   addTaskBtn2 = true;
+// }
+
+//function for login and register popup
 async function loginset() {
   let emailinput = document.getElementById("emailinput").value;
   let passwordinput = document.getElementById("passwordinput").value;
@@ -166,6 +233,7 @@ async function loginset() {
     overlay.classList.toggle("whiteout");
     login.classList.toggle("show");
     login.classList.remove("hide");
+    renderTasks();
   } else {
     if (resp.status == 201) {
       let emaildiv = document.getElementById("emailinputdiv");
@@ -187,7 +255,7 @@ function loginopen(){
 }
 
 function registeruser(){
-  
+  loginopen()
 }
 
 // close settings popup
@@ -221,6 +289,8 @@ function updatestreaks() {
 
 //logout feature
 async function logout(){
+  let todos = document.getElementById("todos");
+  todos.innerHTML = ""
   console.log("in logout func")
   //openlogin == true means autToken is invalid
   let openlogin = await verifyToken();

@@ -85,9 +85,14 @@
             </button>
             <a id="reset" href="index.html"><i class="fa-solid fa-arrow-rotate-left"></i></a>
           </div>
-          <button id="bottone5" class="bottone5" onclick="opensettings()" class="settingsbtn">
-            Settings
-          </button>
+          <div class="SettingsAndFocus">
+            <button id="bottone5" class="bottone5" onclick="opensettings()" class="settingsbtn">
+              Settings
+            </button>
+            <button class="focusbtn" id="focusbtn" onclick="togglefullscreen()">
+              Focus Mode
+            </button>
+          </div>
           <!-- <button id="loginbtn" class="bottone5" onclick="loginopen()" style="margin-top: 20px;">Log in</button> -->
         </div>
       </div>
@@ -101,28 +106,25 @@
         <h1 id="clock"></h1>
       </div>
       <div class="taskFilters">
-        <button class="focusbtn" id="focusbtn" onclick="togglefullscreen()">
-          Focus Mode
-        </button>
-        <div class="filterTags">
-          <!-- <input type="date" id="themeinput"> -->
-          <select id="datetaskfilter" name="theme">
-            <option value="classic">Today</option>
-            <option value="rainyday">Last 3 days</option>
-            <option value="seoul">Future</option>
-          </select>
-          <select id="prioritytaskfilter" name="priorityfilter">
-            <option value="allFlags" data-image="../icons/all_flags.png" id="allFlags"></option>
-            <option value="red" data-image="../icons/red-flag.png"></option>
-            <option value="yellow" data-image="../icons/yellow-flag.png"></option>
-            <option value="blue" data-image="../icons/blue-flag.png"></option>
-            <option value="grey" data-image="../icons/grey-flag.png"></option>
-          </select>
-          <select id="completetaskfilter" name="completefilter">
-            <option value="complete" data-image="../icons/completed.png"></option>
-            <option value="incomplete" data-image="../icons/incomplete.png"></option>
-          </select>
-        </div>
+        <!-- <input type="date" id="themeinput"> -->
+        <select id="completetaskfilter" onchange="taskFilter()" name="completefilter">
+          <option value="off" data-image="../icons/all_checks.png"></option>
+          <option value="complete" data-image="../icons/completed.png"></option>
+          <option value="incomplete" data-image="../icons/incomplete.png"></option>
+        </select>
+        <select id="datetaskfilter" onchange="taskFilter()" name="theme">
+          <option value="off">All</option>
+          <option value="today">Today</option>
+          <option value="future3">Future</option>
+          <option value="past3">Last 3 days</option>
+        </select>
+        <select id="prioritytaskfilter" onchange="taskFilter()" name="priorityfilter">
+          <option value="off" data-image="../icons/all_flags.png" id="allFlags"></option>
+          <option value="red" data-image="../icons/red-flag.png"></option>
+          <option value="yellow" data-image="../icons/yellow-flag.png"></option>
+          <option value="blue" data-image="../icons/blue-flag.png"></option>
+          <option value="grey" data-image="../icons/grey-flag.png"></option>
+        </select>
       </div>
       <div class="taskaction">
         <div id="tasks">
@@ -136,6 +138,10 @@
           <img src="../icons/red-flag.png" id="flag" alt="">
           <img src="../icons/more.png" id="more" class="more" alt="">
         </div> -->
+          <!-- <div class="element" id="addtask" onclick="handleAddTask()">
+            <img src="../icons/plus.png" alt="" id="addicon" class="addicon">
+            <p id="mytask" class="addtasktext">Add a Task and organize your day</p>
+          </div> -->
         </div>
         <div class="addcontainer" id="addcontainer">
           <input type="text" id="entertask" placeholder="Enter a Task">
@@ -216,7 +222,7 @@
               <p class="classictech">Show Spotify Playlist</p>
             </div>
           </div>
-          <a href="https://facilethings.com/blog/en/science-behind-pomodoro-technique" targer="_blank"></a>
+          <a href="https://facilethings.com/blog/en/science-behind-pomodoro-technique" target="_blank">
           <div class="pomodoroexp">
             <p class="classictech">Learn More about the Pomodoro Technique</p>
             <img src="./rightarrow.png" class="rightarrow" alt="">
