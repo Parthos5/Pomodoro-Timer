@@ -21,7 +21,7 @@ router.post("/register",
   body("name", "Name should be minimum 3 characters").isLength({ min: 3 }),
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty()){
       console.log(errors);
       return res.status(400).json({ errors: errors.array() });
     }
@@ -70,7 +70,7 @@ router.post("/login",
       console.log(userData);
 
       if (!userData) {
-        res.status(400).json({ Error: "Email not registered" });
+        res.status(400).json({ errors: "Email not registered" });
       } else {
         const data = remember
           ? {
@@ -86,7 +86,8 @@ router.post("/login",
               },
             };
         const authToken = jwt.sign(data, JWT_SECRET);
-        const pwd = bcrypt.compare(password, userData.password);
+        const pwd = await bcrypt.compare(password, userData.password);
+        console.log(pwd)
         if (pwd) {
           res.status(200).json({
             status: 200,
@@ -102,7 +103,7 @@ router.post("/login",
         }
       }
     } catch (err) {
-      res.status(500).json({ Error: err });
+      res.status(500).json({ errors: err });
     }
   }
 );
@@ -154,6 +155,36 @@ router.post("/getUser", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.post("/getStreaks",async (req,res) => {
+  const {authToken} = req.body;
+  try {
+
+    if (!authToken) {
+      return res.status(401).json({ error: "JWT token is missing" });
+    }
+
+    const decoded = jwt.verify(authToken, JWT_SECRET);
+    const userInfo = decoded.user;
+
+    const user = await User.findOne({ _id: userInfo.id });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ Email:user.email,Streaks: user.streaks });
+  } catch (error) {
+    console.error("JWT verification error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+})
+
+router.post("/setStreaks",async (req,res) => {
+  const {authToken} = req.body;
+
+  
+})
 
 
 module.exports = router;

@@ -1,6 +1,6 @@
 let workTittle = document.getElementById("work");
 let breakTittle = document.getElementById("break");
-const overlay = document.getElementById('overlay');
+const overlay = document.getElementById("overlay");
 localStorage.setItem("timer", JSON.stringify([25, 5]));
 let timersettings = JSON.parse(localStorage.getItem("timer"));
 console.log(timersettings[0]); //WORKTIME
@@ -19,28 +19,26 @@ window.onload = async () => {
   document.getElementById("seconds").innerHTML = seconds;
   workTittle.classList.add("active");
   let authToken = localStorage.getItem("authToken");
-  if(authToken){
-    console.log("verify auth")
-    let test = await fetch("http://localhost:5000/verifyToken",{
-      headers:{
-        Authorization:"Bearer "+authToken
-      }
-    }).then((res)=>res.json());
-    if(test.status == 400){
+  if (authToken) {
+    console.log("verify auth");
+    let test = await fetch("http://localhost:5000/verifyToken", {
+      headers: {
+        Authorization: "Bearer " + authToken,
+      },
+    }).then((res) => res.json());
+    if (test.status == 400) {
       loginopen();
-    }
-    else{
-      console.log("auth verified")
-      console.log(test.remember)
-      if(test.remember === false){
-        console.log("remember me false")
-        localStorage.removeItem("authToken")
+    } else {
+      console.log("auth verified");
+      console.log(test.remember);
+      if (test.remember === false) {
+        console.log("remember me false");
+        localStorage.removeItem("authToken");
         loginopen();
       }
     }
-  }
-  else{
-    loginopen()
+  } else {
+    loginopen();
   }
 };
 
@@ -112,14 +110,15 @@ let settingsbtn = document.getElementById("buttone5");
 let settings = document.getElementById("settings");
 let loginbtn = document.getElementById("loginbtn");
 let login = document.getElementById("login");
+let register = document.getElementById("register");
 let general = document.getElementById("generaltab");
 let timer = document.getElementById("timertab");
 let notification = document.getElementById("notificationtab");
-let profile = document.getElementById("profiletab")
+let profile = document.getElementById("profiletab");
 let timerset = document.getElementById("timerset");
 let generalset = document.getElementById("generalset");
-let notificationset = document.getElementById("notificationset"); 
-let profileset = document.getElementById("profileset")//initialsing the buttons
+let notificationset = document.getElementById("notificationset");
+let profileset = document.getElementById("profileset"); //initialsing the buttons
 
 function opensettings() {
   settings.style.visibility = "visible";
@@ -132,17 +131,18 @@ function opensettings() {
   general.style.display = "block";
   timer.style.display = "none";
   notification.style.display = "none";
-  profile.style.display = "none"
+  profile.style.display = "none";
   timerset.setAttribute("style", `background-color:transparent;color: white;`);
   notificationset.setAttribute(
     "style",
     `background-color:transparent;color: white;`
   );
-  profileset.setAttribute("style", `background-color:transparent;color: white;`);
+  profileset.setAttribute(
+    "style",
+    `background-color:transparent;color: white;`
+  );
 }
 
-
-// async function renderTasks(completed, date, priority) {
 //   let todos = document.getElementById("todos");
 //   let taskdiv = document.getElementById("tasks");
 //   // let addtaskdiv = document.getElementById("addtask")
@@ -212,7 +212,8 @@ function opensettings() {
 async function loginset() {
   let emailinput = document.getElementById("emailinput").value;
   let passwordinput = document.getElementById("passwordinput").value;
-  let rememberinput = document.getElementById("rememberme").checked
+  let rememberinput = document.getElementById("rememberme").checked;
+  let loginError = document.getElementById("loginerror");
   // console.log(rememberinput)
   emailinput.value = "";
   passwordinput.value = "";
@@ -221,41 +222,95 @@ async function loginset() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: emailinput, password: passwordinput,remember:rememberinput }),
+    body: JSON.stringify({
+      email: emailinput,
+      password: passwordinput,
+      remember: rememberinput,
+    }),
   }).then((res) => res.json());
-  console.log(resp)
-  console.log(resp.status);
+  console.log(resp);
+  // console.log(resp.status);
   if (resp.status == 200) {
     // if(rememberinput){
-      localStorage.setItem("authToken",resp.authToken)
+    localStorage.setItem("authToken", resp.authToken);
     // }
     login.style.visibility = "visible";
     overlay.classList.toggle("whiteout");
     login.classList.toggle("show");
     login.classList.remove("hide");
     renderTasks();
+    
   } else {
-    if (resp.status == 201) {
-      let emaildiv = document.getElementById("emailinputdiv");
-      emaildiv.innerHTML += `<p style="color:red">Wrong Email</p>`;
-    } else {
-      let passworddiv = document.getElementById("passwordinputdiv");
-      passworddiv.innerHTML += `<p style="color:red">Wrong password</p>`;
+    let errors;
+    if (resp.errors) {
+      errors = `<p>${resp.errors[0].msg}</p>`;
+    } else if (resp.message) {
+      errors = `<p>${resp.message}</p>`;
     }
+    else{
+      errors = `<p>${resp}</p>`
+    }
+    loginError.innerHTML = errors;
   }
 }
 
-function loginopen(){
-  console.log("in loginopen function")
-  login.style.visibility = "visible";
-  login.classList.toggle("show");
-  overlay.classList.toggle("blackout")
-  login.classList.remove("hide");
-  login.style.display = "flex !important"
+async function registerset() {
+  let emailinput = document.getElementById("emailinputreg").value;
+  let passwordinput = document.getElementById("passwordinputreg").value;
+  let nameinput = document.getElementById("nameinputreg").value;
+  let registerError = document.getElementById("registererror");
+  // console.log(rememberinput)
+  emailinput.value = "";
+  passwordinput.value = "";
+  nameinput.value = "";
+
+  let resp = await fetch("http://localhost:5000/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: emailinput,
+      password: passwordinput,
+      name: nameinput,
+    }),
+  }).then((res) => res.json());
+  console.log(resp);
+  console.log(resp.status);
+  if (resp.errors) {
+    console.log(resp.errors.length);
+    let errors = "";
+    for (let i = 0; i < resp.errors.length; i++) {
+      errors += `<p>${resp.errors[i].msg}</p>`;
+    }
+    registerError.innerHTML += errors;
+  }
+  else{
+    registeropen();
+  }
 }
 
-function registeruser(){
-  loginopen()
+function loginopen() {
+  console.log("in loginopen function");
+  login.style.visibility = "visible";
+  login.classList.toggle("show");
+  overlay.classList.toggle("blackout");
+  login.classList.remove("hide");
+  login.style.display = "flex !important";
+}
+
+function registeropen() {
+  register.style.visibility = "visible";
+  register.classList.toggle("show");
+  overlay.classList.toggle("blackout");
+  register.classList.remove("hide");
+  register.style.display = "flex !important";
+}
+
+function registeruser() {
+  registeropen();
+  loginopen();
+  console.log("in registeruser funcn");
 }
 
 // close settings popup
@@ -288,49 +343,46 @@ function updatestreaks() {
 }
 
 //logout feature
-async function logout(){
+async function logout() {
   let todos = document.getElementById("todos");
-  todos.innerHTML = ""
-  console.log("in logout func")
+  todos.innerHTML = "";
+  console.log("in logout func");
   //openlogin == true means autToken is invalid
   let openlogin = await verifyToken();
-  if(openlogin){
-    console.log("opening login popup")
+  if (openlogin) {
+    console.log("opening login popup");
     closesettings();
     window.location.reload();
-  }
-  else{
+  } else {
     closesettings();
-    localStorage.removeItem("authToken")
-    loginopen()
+    localStorage.removeItem("authToken");
+    loginopen();
   }
 }
 
 //verify token general function
-async function verifyToken(){
-  let openlogin
+async function verifyToken() {
+  let openlogin;
   let authToken = await localStorage.getItem("authToken");
-  if(!authToken){
-    openlogin = true
-    console.log("no auth token")
-    return openlogin
-  }
-  else{
-    let test = await fetch("http://localhost:5000/verifyToken",{
-      headers:{
-        Authorization:"Bearer "+authToken
-      }
-    }).then((res)=>res.json());
-    console.log(test)
-    if(test.status == 400){
-      openlogin = true
-      return openlogin
-    }
-    else{
-      console.log("auth verified")
-      console.log(test)
-      openlogin = false
-      return openlogin
+  if (!authToken) {
+    openlogin = true;
+    console.log("no auth token");
+    return openlogin;
+  } else {
+    let test = await fetch("http://localhost:5000/verifyToken", {
+      headers: {
+        Authorization: "Bearer " + authToken,
+      },
+    }).then((res) => res.json());
+    console.log(test);
+    if (test.status == 400) {
+      openlogin = true;
+      return openlogin;
+    } else {
+      console.log("auth verified");
+      console.log(test);
+      openlogin = false;
+      return openlogin;
     }
   }
 }

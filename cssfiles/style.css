@@ -236,7 +236,8 @@ h1 {
   top: 45%;
 }
 
-#login {
+#login,
+#register {
   display: flex !important;
   align-items: center;
   flex-direction: column;
@@ -469,7 +470,11 @@ h1 {
 }
 
 #emailinput,
-#passwordinput{
+#passwordinput,
+#nameinput,
+#emailinputreg,
+#nameinputreg,
+#passwordinputreg{
   width: 300px;
   height: 40px;
   font-size: 15px;
@@ -480,7 +485,11 @@ h1 {
 }
 
 #emailinput option,
-#passwordinput option{
+#passwordinput option,
+#nameinput option,
+#emailinputreg option,
+#nameinputreg option,
+#passwordinputreg option{
   background-color: rgb(41, 44, 74);
   color: white;
   padding: 10px;
@@ -507,6 +516,14 @@ h1 {
 
 .rightarrow {
   height: 20px;
+}
+
+#registererror p,
+#loginerror p{
+  font-weight: 400;
+  color: red;
+  font-size: 16px;
+  text-align: center;
 }
 
 /* general tab ends */
@@ -787,3 +804,12 @@ input:checked + .slider:before {
 }
 
 /* css for focus mode btn ends */
+
+/* register btn */
+.registerbtn{
+  margin-top: 5px !important;
+}
+
+.registerhead{
+  margin-bottom:20px
+}

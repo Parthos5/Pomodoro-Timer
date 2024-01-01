@@ -300,7 +300,7 @@
     </div>
     <div class="overlay" id="overlay">jj</div>
     <div class="settings loginsettings" id="login">
-      <h2 class="loginhead">Login to Balance</h2>
+      <h2 class="loginhead">Login to Balance<span id="loginerror"></span></h2>
       <div class="loginform">
         <div id="emailinputdiv" class="selecttheme logininput">
           <h4 class="inputhead">Email</h4>
@@ -327,6 +327,28 @@
         <button id="loginbtn" class="bottone5 logintaskbox" onclick="loginset()" style="margin-top: 20px;">Log
           in</button>
         <div id="newaccount">Don't Have An Account? <div id="signup" onclick="registeruser()">Sign up for Balance
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings loginsettings registersettings" id="register">
+      <h2 class="loginhead registerhead" id="registerhead">Register to Balance<span id="registererror"></span></h2>
+      <div class="loginform">
+        <div class="selecttheme logininput" id="nameinputdiv">
+          <h4 class="inputhead">Name</h4>
+          <input id="nameinputreg" type="text" class="emailinput" placeholder="Name">
+        </div>
+        <div id="emailinputdiv" class="selecttheme logininput">
+          <h4 class="inputhead">Email</h4>
+          <input id="emailinputreg" type="text" class="emailinput" placeholder="abc@example.com">
+        </div>
+        <div class="selecttheme logininput" id="passwordinputdiv">
+          <h4 class="inputhead">Password</h4>
+          <input id="passwordinputreg" type="password" class="emailinput" placeholder="Password">
+        </div>
+        <button id="loginbtn" class="bottone5 logintaskbox registerbtn" onclick="registerset()" style="margin-top: 20px;">Register</button>
+        <div id="newaccount">Have An Account? <div id="signup" onclick="registeruser()">Login in to Balance
           </div>
         </div>
       </div>

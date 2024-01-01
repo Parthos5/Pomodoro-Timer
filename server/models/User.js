@@ -42,6 +42,7 @@ const userSchema = new Schema({
         type:String,
         default:"",
     },
+    streaks:[],
     tasks:[taskSchema]
 })
 
