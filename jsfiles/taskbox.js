@@ -1,4 +1,6 @@
-const BACKEND_URL = "http://localhost:5000/getTasks";
+
+// Use the backendUrl variable in your code
+// const BACKEND_URL = "http://localhost:5000";
 const authToken = localStorage.getItem("authToken");
 let tasksArrMain;
 let addTaskBtn = false;
@@ -64,7 +66,7 @@ setInterval(updateClock, 1000);
 //fetch tasks from db
 async function fetchTasks(completed, date, priority) {
   console.log(completed, date, priority);
-  let tasks = await fetch("http://localhost:5000/getTasks", {
+  let tasks = await fetch(`${BACKEND_URL}` + `/getTasks`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -282,7 +284,7 @@ addthetask.addEventListener("click", async function () {
     p4.style.backgroundColor = "whitesmoke";
   }
 
-  let resp = await fetch("http://localhost:5000/addTask", {
+  let resp = await fetch(`${BACKEND_URL}` + `/addTask`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -359,7 +361,7 @@ async function checkTask(task, completed, taskId) {
     checked = "n";
   }
   console.log(checked);
-  let resp = await fetch("http://localhost:5000/checkTasks", {
+  let resp = await fetch(`${BACKEND_URL}` + `/checkTasks`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -383,7 +385,7 @@ async function deleteTask(taskId) {
   console.log(task);
   task.style.display = "none";
 
-  let resp = await fetch("http://localhost:5000/deleteTask", {
+  let resp = await fetch(`${BACKEND_URL}` + `/deleteTask`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

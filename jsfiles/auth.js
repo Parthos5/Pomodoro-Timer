@@ -6,13 +6,14 @@ const scope = [
   "streaming",
   "user-read-private",
   "user-read-playback-state",
+  "user-modify-playback-state",
 ];
 
 const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}`;
 
 const params = new URLSearchParams(window.location.hash.substring(1));
 const accessToken = params.get("access_token");
-console.log(accessToken)
+console.log(accessToken);
 
 // if(accessToken)
 // {
@@ -27,7 +28,7 @@ function author() {
   window.location.href = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}`;
   // Get the access token from the URL
   let authbtn = document.getElementById("authbtn");
-  authbtn.style.display = "none"
+  authbtn.style.display = "none";
 }
 
 // console.log(accessToken)
@@ -103,7 +104,7 @@ function search() {
               <p id="playlistdesc">Get your beast mode on!</p>
               <p style="display:none" id="playlisturl">${playlists.uri}</p></h3>
             </div>
-            </div>`
+            </div>`;
       });
     })
     .catch(function (error) {
@@ -184,18 +185,18 @@ function playtrack(track) {
       player.addListener("player_state_changed", (state) => {
         // Check if a new track is playing
         if (state.track_window.current_track) {
-            let songdiv = document.getElementById("songdetails");
-            let songpic = document.getElementById("songpicture");
-            let songname = document.getElementById("songname");
-            let artistname = document.getElementById("artistname");
-        
-            playstateimg.style.display = "none";
-            pausestateimg.style.display = "block";
-            songname.innerHTML= `${state.track_window.current_track.name}`
-            songpic.src=state.track_window.current_track.album.images[0].url;
-            artistname.innerHTML = `${state.track_window.current_track.artists[0].name}`
-        };
-        })
+          let songdiv = document.getElementById("songdetails");
+          let songpic = document.getElementById("songpicture");
+          let songname = document.getElementById("songname");
+          let artistname = document.getElementById("artistname");
+
+          playstateimg.style.display = "none";
+          pausestateimg.style.display = "block";
+          songname.innerHTML = `${state.track_window.current_track.name}`;
+          songpic.src = state.track_window.current_track.album.images[0].url;
+          artistname.innerHTML = `${state.track_window.current_track.artists[0].name}`;
+        }
+      });
     } else {
       console.log("Connection to Spotify Failed");
     }
@@ -203,22 +204,32 @@ function playtrack(track) {
 }
 
 //play a playlist once it is clicked on
-function playplaylist(e) {
+async function playplaylist(e) {
   console.log("hi im in playplaylist function");
   let mydeviced;
   const token = accessToken;
   let playlisturl = e.querySelector("#playlisturl").innerHTML;
   let playstateimg = document.getElementById("play");
   let pausestateimg = document.getElementById("pause");
-  player.connect().then((success) =>{
+  player.connect().then(async (success) => {
     if (success) {
+
       player.addListener("ready", ({ device_id }) => {
         console.log("Connected with Device ID", device_id);
         mydeviced = device_id;
       });
+      // await fetch("https://api.spotify.com/v1/me/player",{
+      //   method:"GET",
+      //   headers:{
+      //     "Content-Type":"application/json",
+      //     "Authorization":`Bearer ${token}`,
+      //   }
+      // }).then((res)=>res.json()).then((data)=>console.log(data));
+      console.log("playlist is");
+      console.log(playlisturl);
       player.addListener("ready", () => {
         fetch(
-          `https://api.spotify.com/v1/me/player/play`,
+          `https://api.spotify.com/v1/me/player/play?device_id=${mydeviced}`,
           {
             method: "PUT",
             headers: {
@@ -245,18 +256,18 @@ function playplaylist(e) {
       player.addListener("player_state_changed", (state) => {
         // Check if a new track is playing
         if (state.track_window.current_track) {
-            let songdiv = document.getElementById("songdetails");
-            playstateimg.style.display = "none";
-            pausestateimg.style.display = "block";
-            let songpic = document.getElementById("songpicture");
-            let songname = document.getElementById("songname");
-            let artistname = document.getElementById("artistname");
-        
-            songname.innerHTML= `${state.track_window.current_track.name}`
-            songpic.src=state.track_window.current_track.album.images[0].url;
-            artistname.innerHTML = `${state.track_window.current_track.artists[0].name}`
-        };
-        })
+          let songdiv = document.getElementById("songdetails");
+          playstateimg.style.display = "none";
+          pausestateimg.style.display = "block";
+          let songpic = document.getElementById("songpicture");
+          let songname = document.getElementById("songname");
+          let artistname = document.getElementById("artistname");
+
+          songname.innerHTML = `${state.track_window.current_track.name}`;
+          songpic.src = state.track_window.current_track.album.images[0].url;
+          artistname.innerHTML = `${state.track_window.current_track.artists[0].name}`;
+        }
+      });
     } else {
       console.log("Player not connected successfully");
     }
@@ -264,111 +275,106 @@ function playplaylist(e) {
 }
 
 //function to pause the current song
-function pause() {
+async function pause() {
   console.log("in pause funcn");
   let pausebtn = document.getElementById("pause");
   let playstateimg = document.getElementById("play");
   let mydeviceds;
   const tokens = accessToken;
-  player.connect().then((success) => {
-    if (success) {
-      console.log("Player successfully connected");
 
-      fetch("https://api.spotify.com/v1/me/player", {
-        headers: {
-          Authorization: "Bearer " + tokens,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            console.log(response);
-            return response.json();
-          }
-          throw new Error("Failed to fetch current playback state");
-        })
-        .then((data) => {
-          let trackUri = data.item.uri;
-          let isPlaying = data.is_playing;
-          console.log(data);
+  await fetch("https://api.spotify.com/v1/me/player", {
+    headers: {
+      Authorization: "Bearer " + tokens,
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log(response);
+        return response.json();
+      }
+      throw new Error("Failed to fetch current playback state");
+    })
+    .then(async (data) => {
+      let trackUri = data.item.uri;
+      let isPlaying = data.is_playing;
+      console.log(data);
 
-          // Pause the current playback
-          if (isPlaying) {
-            fetch("https://api.spotify.com/v1/me/player/pause", {
-              method: "PUT",
-              headers: {
-                Authorization: "Bearer " + tokens,
-              },
-            }).then((response) => {
-              if (!response.ok) {
-                throw new Error("Failed to pause playback");
-              }
-              else{
-                pausebtn.style.display = "none";
-                playstateimg.style.display = "block";
-              }
-            });
-          }
-
-          // Resume the playback
-          else {
-            fetch("https://api.spotify.com/v1/me/player/play", {
-              method: "PUT",
-              headers: {
-                Authorization: "Bearer " + tokens,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ uris: [trackUri] }),
-            }).then((response) => {
-              if (!response.ok) {
-                throw new Error("Failed to resume playback");
-              }
-            });
+      // Pause the current playback
+      if (isPlaying) {
+        pausebtn.style.display = "none";
+        playstateimg.style.display = "block";
+        await fetch("https://api.spotify.com/v1/me/player/pause", {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + tokens,
+          },
+        }).then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to pause playback");
+          } else {
+            pausebtn.style.display = "none";
+            playstateimg.style.display = "block";
           }
         });
-    } else {
-      console.log("Player has failed to connect");
-    }
-  });
+      }
+      // Resume the playback
+      else {
+        playstateimg.style.display = "none";
+        pausebtn.style.display = "block";
+
+        await fetch("https://api.spotify.com/v1/me/player/play", {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + tokens,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ uris: [trackUri] }),
+        }).then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to resume playback");
+          }
+        });
+      }
+    });
 }
 
 //function to play the next track
-function next(){
+async function next() {
   const tokend = accessToken;
-  fetch('https://api.spotify.com/v1/me/player/next', {
-    method: 'POST',
+  await fetch("https://api.spotify.com/v1/me/player/next", {
+    method: "POST",
     headers: {
-      'Authorization': 'Bearer ' + tokend
-    }
+      Authorization: "Bearer " + tokend,
+    },
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Failed to skip to next track');
-    }
-  })
-  .catch(error => {
-    console.error(error);
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to skip to next track");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 //function to play previous track
-function previous(){
-  const tokenpr = accessToken
-  fetch('https://api.spotify.com/v1/me/player/previous', {
-    method: 'POST',
+function previous() {
+  const tokenpr = accessToken;
+  fetch("https://api.spotify.com/v1/me/player/previous", {
+    method: "POST",
     headers: {
-      'Authorization': 'Bearer ' + tokenpr
-    }
+      Authorization: "Bearer " + tokenpr,
+    },
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Failed to skip to previous track');
-    }
-  })
-  .catch(error => {
-    console.error(error);
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to skip to previous track");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
-
 
 //listener to display information of a song when and if it changes
 // player.addListener("player_state_changed", (state) => {
@@ -400,11 +406,11 @@ function previous(){
 //     const songName = data.item.name;
 //     const artistName = data.item.artists[0].name;
 //     const albumImage = data.item.album.images[0].url;
-  
+
 //     let songpic = document.getElementById("songpic");
 //     let songname = document.getElementById("songname");
 //     let artistname = document.getElementById("artistname");
-  
+
 //     songname.textContent = songName;
 //     artistname.textContent = artistName;
 //     songpic.src = albumImage;
@@ -412,8 +418,6 @@ function previous(){
 //   .catch(error => {
 //     console.error(error);
 //   });
-
-
 
 //fetching user's available devices
 //     fetch('	https://api.spotify.com/v1/me/player/devices', {

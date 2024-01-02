@@ -1,3 +1,5 @@
+const BACKEND_URL = "http://localhost:5000";
+
 let workTittle = document.getElementById("work");
 let breakTittle = document.getElementById("break");
 const overlay = document.getElementById("overlay");
@@ -21,7 +23,7 @@ window.onload = async () => {
   let authToken = localStorage.getItem("authToken");
   if (authToken) {
     console.log("verify auth");
-    let test = await fetch("http://localhost:5000/verifyToken", {
+    let test = await fetch(`${BACKEND_URL}` + `/verifyToken`, {
       headers: {
         Authorization: "Bearer " + authToken,
       },
@@ -219,7 +221,7 @@ async function loginset() {
   // console.log(rememberinput)
   emailinput.value = "";
   passwordinput.value = "";
-  let resp = await fetch("http://localhost:5000/login", {
+  let resp = await fetch(`${BACKEND_URL}` + `/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -266,7 +268,7 @@ async function registerset() {
   passwordinput.value = "";
   nameinput.value = "";
 
-  let resp = await fetch("http://localhost:5000/register", {
+  let resp = await fetch(`${BACKEND_URL}` + `/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -332,7 +334,7 @@ function closesettings() {
 async function fetchStreaks(){
   console.log("in fetch streaks funcn")
   let authToken = localStorage.getItem("authToken");
-  let resp = await fetch("http://localhost:5000/getStreaks",{
+  let resp = await fetch(`${BACKEND_URL}` + `/getStreaks`,{
     method:"POST",
     headers:{
       'Content-Type':"application/json"
@@ -361,7 +363,7 @@ async function updatestreaks() {
   let streaks = JSON.parse(localStorage.getItem("streaks"));
   console.log(streaks);
   streaks[today - 1] += 1;
-  let resp = await fetch("http://localhost:5000/updateStreaks",{
+  let resp = await fetch(`${BACKEND_URL}` + `/updateStreaks`,{
     method:"POST",
     headers:{
       "Content-Type":"application/json"
@@ -402,7 +404,7 @@ async function verifyToken() {
     console.log("no auth token");
     return openlogin;
   } else {
-    let test = await fetch("http://localhost:5000/verifyToken", {
+    let test = await fetch(`${BACKEND_URL}` + `/verifyToken`, {
       headers: {
         Authorization: "Bearer " + authToken,
       },
