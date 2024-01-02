@@ -30,6 +30,7 @@ window.onload = async () => {
       loginopen();
     } else {
       console.log("auth verified");
+      fetchStreaks()
       console.log(test.remember);
       if (test.remember === false) {
         console.log("remember me false");
@@ -72,6 +73,7 @@ function start() {
 
     if (seconds == 0) {
       workMinutes = workMinutes - 1;
+      updatestreaks() 
       if (workMinutes == -1) {
         if (breakCount % 2 == 0) {
           workMinutes = breakMinutes;
@@ -92,9 +94,9 @@ function start() {
       seconds = 59;
     }
   };
-  if ((workTime - workMinutes) % 25 == 0) {
-    updatestreaks();
-  }
+  // if ((workTime - workMinutes) % 25 == 0) {
+  //   updatestreaks();
+  // }
   setInterval(timerFunction, 1000);
 }
 
@@ -239,7 +241,7 @@ async function loginset() {
     login.classList.toggle("show");
     login.classList.remove("hide");
     renderTasks();
-    
+    fetchStreaks();
   } else {
     let errors;
     if (resp.errors) {
@@ -287,6 +289,8 @@ async function registerset() {
   }
   else{
     registeropen();
+    window.location.reload
+    
   }
 }
 
@@ -324,6 +328,22 @@ function closesettings() {
   }, 700);
 }
 
+//fetching user streaks
+async function fetchStreaks(){
+  console.log("in fetch streaks funcn")
+  let authToken = localStorage.getItem("authToken");
+  let resp = await fetch("http://localhost:5000/getStreaks",{
+    method:"POST",
+    headers:{
+      'Content-Type':"application/json"
+    },
+    body:JSON.stringify({
+      authToken
+    })
+  }).then((res)=>res.json());
+  console.log(resp.streaks)
+  localStorage.setItem("streaks",JSON.stringify(resp.streaks))
+}
 //updating streaks code
 let numericday = new Date();
 let numericdate = numericday.getDay();
@@ -334,11 +354,24 @@ if (numericdate == 0) {
 
 const today = new Date().getDay();
 console.log("today is" + today);
-let streaks = [numericdate, 0, 0, 0, 0, 0, 0, 0];
+// let streaks = [numericdate, 0, 0, 0, 0, 0, 0, 0];
 
-//function for  sending streaks data
-function updatestreaks() {
+//function for sending streaks data
+async function updatestreaks() {
+  let streaks = JSON.parse(localStorage.getItem("streaks"));
+  console.log(streaks);
   streaks[today - 1] += 1;
+  let resp = await fetch("http://localhost:5000/updateStreaks",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      authToken,
+      streaks
+    })
+  }).then((res)=>res.json());
+  console.log(resp)
   localStorage.setItem("streaks", JSON.stringify(streaks));
 }
 

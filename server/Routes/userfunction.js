@@ -35,10 +35,12 @@ router.post("/register",
     const salt = await bcrypt.genSalt(10);
     const secPassword = await bcrypt.hash(password, salt);
     try {
+      let streaks = [0,0,0,0,0,0,0];
       await User.create({
         email: email,
         password: secPassword,
         name: name,
+        streaks:streaks
       });
       res.status(200).json({ message: "Success,User Created!" });
     } catch (err) {
@@ -173,7 +175,7 @@ router.post("/getStreaks",async (req,res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ Email:user.email,Streaks: user.streaks });
+    res.status(200).json({ Email:user.email,streaks: user.streaks });
   } catch (error) {
     console.error("JWT verification error:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -182,8 +184,59 @@ router.post("/getStreaks",async (req,res) => {
 
 router.post("/setStreaks",async (req,res) => {
   const {authToken} = req.body;
+  try {
 
-  
+    if (!authToken) {
+      return res.status(401).json({ error: "JWT token is missing" });
+    }
+
+    const decoded = jwt.verify(authToken, JWT_SECRET);
+    const userInfo = decoded.user;
+
+    const user = await User.findOne({ _id: userInfo.id });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    user.streaks = [3,8,16,22,19,2,8];
+    await user.save();
+
+    res.status(200).json({ Email:user.email,Streaks: user.streaks });
+  } catch (error) {
+    console.error("JWT verification error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+
+})
+
+router.post("/updateStreaks",async (req,res) => {
+  let {authToken,streaks} = req.body;
+  try {
+
+    if (!authToken) {
+      return res.status(401).json({ error: "JWT token is missing" });
+    }
+    if(!streaks || streaks.length < 7){
+      return res.status(400).json({rrror:"Insufficient streaks array"})
+    }
+
+    const decoded = jwt.verify(authToken, JWT_SECRET);
+    const userInfo = decoded.user;
+
+    const user = await User.findOne({ _id: userInfo.id });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    user.streaks = streaks;
+    await user.save();
+
+    res.status(200).json({ Email:user.email,Streaks: user.streaks });
+  } catch (error) {
+    console.error("JWT verification error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+
 })
 
 

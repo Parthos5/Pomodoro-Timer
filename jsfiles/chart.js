@@ -7,17 +7,22 @@ let data_arr;
 // localStorage.setItem("streaks",JSON.stringify([3,8,18,23,15,11,9]));
 function returndata_arr(){
   data_arr = JSON.parse(localStorage.getItem("streaks"));
-  let indexd = data_arr[0];
-  let ctr = 0;
-  if(1<=indexd<=7 && ctr == 0)
-  {
-  data_arr[indexd] = 0;
-  indexd = 100;
-  ctr++;
-  }
+  // chart.update()
   return data_arr;
 }
-setInterval(returndata_arr,1000)
+// setInterval(returndata_arr,60000)
+
+function updateChart() {
+  // Assuming returndata_arr() is a function that returns the updated data
+  const newData = returndata_arr();
+  // Update the chart's data
+  chart.data.datasets[0].data = newData;
+  // Update the chart
+  chart.update();
+}
+
+// Periodically update the chart every 5 seconds (adjust the interval as needed)
+setInterval(updateChart,62000);
 
 const chart = new Chart(ctx, {
   type: "line",
@@ -51,7 +56,7 @@ const chart = new Chart(ctx, {
           ticks: {
             beginAtZero: true,
             stepSize: 10,
-            max: 40,
+            max: 100,
           },
           grid: {
             color: "rgb(0,0,0)",
