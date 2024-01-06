@@ -1,6 +1,6 @@
 const authTokenSpotify = localStorage.getItem("authToken");
-// const client_id = "40e0eacdf8d744fe8bb0946f7091daf8";
-// const redirect_uri = "http://127.0.0.1:5500/index.html";
+const client_id = "40e0eacdf8d744fe8bb0946f7091daf8";
+const redirect_uri = "https://balance-rho.vercel.app/";
 const scope = [
   "user-read-email",
   "app-remote-control",
@@ -22,7 +22,7 @@ async function findCreds() {
     })
   }).then((data)=>data.json());
 
-  authUrl = `https://accounts.spotify.com/authorize?client_id=${creds.client_id}&response_type=token&redirect_uri=${creds.redirect_uri}&scope=${scope}`;
+  authUrl = `https://accounts.spotify.com/authorize?client_id=${creds.client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}`;
   
 }
 
