@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
@@ -20,6 +21,6 @@ app.use("/", require("./Routes/tasks"));
 app.use("/",require("./Routes/spotify"));
 
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening on port ${port}`);
 });
