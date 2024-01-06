@@ -1,6 +1,6 @@
 const authTokenSpotify = localStorage.getItem("authToken");
 // const client_id = "40e0eacdf8d744fe8bb0946f7091daf8";
-// const redirect_uri = "https://balance-rho.vercel.app/";
+const redirect_uri = "https://balance-rho.vercel.app/";
 const scope = [
   "user-read-email",
   "app-remote-control",
