@@ -91,7 +91,7 @@ spotifyApi
     });
   })
   .catch(function (error) {
-    //console.error(error);
+    console.error(error);
   });
 
 //search function for playlists
@@ -187,8 +187,8 @@ function playtrack(track) {
             }),
           }
         )
-          .then((response) => //console.log(response))
-          .catch((error) => //console.error(error));
+          .then((response) => console.log(response))
+          .catch((error) => console.error(error));
       });
       player.addListener("player_state_changed", (state) => {
         // Check if a new track is playing

@@ -299,7 +299,7 @@ addthetask.addEventListener("click", async function () {
     }),
   })
     .then((ans) => ans.json())
-    .then((data) => //console.log(data));
+    .then((data) => console.log(data));
 });
 
 function priority(e) {
