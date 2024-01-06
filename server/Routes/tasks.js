@@ -24,7 +24,7 @@ router.post("/getTasks", async (req, res) => {
     }
     let userInfo = decoded.user;
     let user = await User.findOne({ _id: userInfo.id });
-    // console.log(tasks.tasks)
+    // //console.log(tasks.tasks)
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
@@ -52,7 +52,7 @@ router.post("/getTasks", async (req, res) => {
     const blueTasks = finalTasks.filter((task) => task.priority === "blue");
     const greyTasks = finalTasks.filter((task) => task.priority === "grey");
     let tasks = [...redTasks, ...yellowTasks, ...blueTasks, ...greyTasks];
-    // console.log(tasks);
+    // //console.log(tasks);
     return res.status(200).json({ message: "success", tasks });
   } catch (err) {
     return res.status(400).json({ Error: err });
@@ -72,7 +72,7 @@ router.post("/addTask", async (req, res) => {
   if (!task.description) {
     res.status(400).json({ error: "missing description" });
   }
-  console.log(task.date);
+  //console.log(task.date);
 
   try {
     const decoded = await jwt.verify(authToken, JWT_SECRET);
@@ -135,7 +135,7 @@ router.post("/checkTasks", async (req, res) => {
 //delete task
 router.post("/deleteTask", async (req, res) => {
   const { authToken, taskId } = req.body;
-  console.log("hello");
+  //console.log("hello");
   if (!authToken) {
     return res.status(400).json({ error: "No auth token found" });
   }
@@ -155,7 +155,7 @@ router.post("/deleteTask", async (req, res) => {
     }
 
     let tasks = user.tasks;
-    console.log("2nd hello");
+    //console.log("2nd hello");
 
     const isValidObjectId = mongoose.Types.ObjectId.isValid(taskId);
     if (!isValidObjectId) {
@@ -167,9 +167,9 @@ router.post("/deleteTask", async (req, res) => {
     // }
     var ObjectId = require("mongodb").ObjectId;
     let newTaskId = new ObjectId(taskId); // wrap in ObjectID
-    console.log("3rd hello");
-    console.log(newTaskId);
-    // console.log(taskIdObj)
+    //console.log("3rd hello");
+    //console.log(newTaskId);
+    // //console.log(taskIdObj)
     let taskIndex = tasks.findIndex(
       (task) => task._id.toString() === newTaskId.toString()
     );
@@ -205,10 +205,10 @@ async function priorityTasks(prevtasks, priority) {
 //filter tasks according to the date
 async function dateTasks(prevtasks, date) {
   let tasks;
-  console.log("datemsg 1");
+  //console.log("datemsg 1");
   // Getting today's date
   const tempToday = new Date();
-  console.log(tempToday);
+  //console.log(tempToday);
   // tempToday.setHours(0, 0, 0, 0);
   const today = tempToday.toISOString().replace(/T.*$/, "T00:00:00.000Z");
 
@@ -237,7 +237,7 @@ async function dateTasks(prevtasks, date) {
     } else {
       tasks = prevtasks.filter((task) => task.completed === false);
     }
-    // console.log(tasks);
+    // //console.log(tasks);
     return tasks;
 };
 

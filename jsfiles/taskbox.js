@@ -5,8 +5,8 @@ const authToken = localStorage.getItem("authToken");
 let tasksArrMain;
 let addTaskBtn = false;
 if (authToken) {
-  // console.log(authToken)
-  console.log("executing get tasks");
+  // //console.log(authToken)
+  //console.log("executing get tasks");
   renderTasks("off", "off", "off");
 }
 const currentDate = new Date();
@@ -46,7 +46,7 @@ function getOrdinalSuffix(number) {
       return "th";
   }
 }
-console.log(todaydate);
+//console.log(todaydate);
 let recentdate = document.getElementById("todaydate");
 recentdate.innerHTML = `${todaydate}`;
 
@@ -65,7 +65,7 @@ setInterval(updateClock, 1000);
 
 //fetch tasks from db
 async function fetchTasks(completed, date, priority) {
-  console.log(completed, date, priority);
+  //console.log(completed, date, priority);
   let tasks = await fetch(`${BACKEND_URL}` + `/getTasks`, {
     method: "POST",
     headers: {
@@ -78,7 +78,7 @@ async function fetchTasks(completed, date, priority) {
       completed,
     }),
   }).then((res) => res.json());
-  console.log(tasks.tasks);
+  //console.log(tasks.tasks);
   return tasks.tasks;
 }
 
@@ -89,16 +89,16 @@ async function renderTasks(completed, date, priority) {
   // let addtaskdiv = document.getElementById("addtask")
   let tasksArr = await fetchTasks(completed, date, priority);
   tasksArrMain = tasksArr;
-  // console.log(tasksArr)
+  // //console.log(tasksArr)
   // addtaskdiv.innerHTML = ""
   todos.innerHTML = "";
 
   if (tasksArr.length > 0) {
-    // console.log(tasksArr);
+    // //console.log(tasksArr);
     for (let i = 0; i < tasksArr.length; i++) {
-      console.log(tasksArr[i]._id);
+      //console.log(tasksArr[i]._id);
       if (!tasksArr[i].completed) {
-        console.log("inside rendering tasksArr");
+        //console.log("inside rendering tasksArr");
         // todos.innerHTML = "hello"
         todos.innerHTML += `
       <div id="element" class="element">
@@ -150,24 +150,24 @@ async function renderTasks(completed, date, priority) {
 }
 
 async function cutTasks(completed, taskId) {
-  console.log("in gentasks funcn");
-  console.log(taskId);
+  //console.log("in gentasks funcn");
+  //console.log(taskId);
   const taskFoundDesc = document.getElementById(taskId);
   if (completed) {
     if (taskFoundDesc) {
       // Apply the text-decoration style
       taskFoundDesc.style.textDecoration = "line-through";
-      console.log(taskFoundDesc);
+      //console.log(taskFoundDesc);
     } else {
-      console.log("Element not found with the specified taskId:", taskId);
+      //console.log("Element not found with the specified taskId:", taskId);
     }
   } else {
     if (taskFoundDesc) {
       // Apply the text-decoration style
       taskFoundDesc.style.textDecoration = "none";
-      console.log(taskFoundDesc);
+      //console.log(taskFoundDesc);
     } else {
-      console.log("Element not found with the specified taskId:", taskId);
+      //console.log("Element not found with the specified taskId:", taskId);
     }
   }
 }
@@ -179,7 +179,7 @@ let finalpriority;
 function handleAddTask() {
   let addtaskbtn = document.getElementById("addtask");
   let addcontainer = document.getElementById("addcontainer");
-  console.log("i am in function");
+  //console.log("i am in function");
   addcontainer.style.display = "block";
   addtaskbtn.style.display = "none";
 }
@@ -208,17 +208,17 @@ addthetask.addEventListener("click", async function () {
   let todos = document.getElementById("todos");
   let description = taskinput.value;
   let priority;
-  console.log(priorityctr);
-  console.log(taskinput.value);
-  console.log(dateinput.value);
+  //console.log(priorityctr);
+  //console.log(taskinput.value);
+  //console.log(dateinput.value);
   if (priorityctr === 0) {
     //making sure a priority is selected
-    console.log("select a priority");
+    //console.log("select a priority");
     document.getElementById("p1").style.backgroundColor = "#47da99"; //making bg colors of these cotnainers green
     document.getElementById("p2").style.backgroundColor = "#47da99";
     document.getElementById("p3").style.backgroundColor = "#47da99";
     document.getElementById("p4").style.backgroundColor = "#47da99";
-    console.log("add a task name");
+    //console.log("add a task name");
     setTimeout(() => {
       // Reset the color to the original color
       document.getElementById("p1").style.backgroundColor = originalColor;
@@ -237,7 +237,7 @@ addthetask.addEventListener("click", async function () {
   }
   if (dateinput.value == "") {
     //making sure a date is entered
-    console.log("add a date");
+    //console.log("add a date");
     dateinput.style.backgroundColor = "#e8847b";
     setTimeout(() => {
       // Reset the color to the original color
@@ -263,7 +263,7 @@ addthetask.addEventListener("click", async function () {
       img = `<img src="../icons/grey-flag.png" id="flag" alt="">`;
       priority = "grey";
     }
-    console.log(finalpriority);
+    //console.log(finalpriority);
     // renderTasks()
     todos.innerHTML += `<div id="element" class="element"> 
     <label class="containercheck">
@@ -299,7 +299,7 @@ addthetask.addEventListener("click", async function () {
     }),
   })
     .then((ans) => ans.json())
-    .then((data) => console.log(data));
+    .then((data) => //console.log(data));
 });
 
 function priority(e) {
@@ -310,10 +310,10 @@ function priority(e) {
   // let p3 = document.getElementById("p3");
   // let p4 = document.getElementById("p4");
 
-  console.log(selectedpr);
+  //console.log(selectedpr);
   let cid = e.id;
   let idcid = document.getElementById(cid);
-  console.log(idcid);
+  //console.log(idcid);
 
   if (cid == "p1") {
     p1.style.backgroundColor = "#47da99";
@@ -349,18 +349,18 @@ function convertdate(date) {
   // rearrange the values in the array to the desired format
   const formattedDate = dateArray[2] + "-" + dateArray[1] + "-" + dateArray[0];
 
-  console.log(formattedDate); // prints day-month-year format of the date
+  //console.log(formattedDate); // prints day-month-year format of the date
   return formattedDate;
 }
 
 async function checkTask(task, completed, taskId) {
-  console.log(tasksArrMain);
+  //console.log(tasksArrMain);
   if (completed) {
     checked = "y";
   } else {
     checked = "n";
   }
-  console.log(checked);
+  //console.log(checked);
   let resp = await fetch(`${BACKEND_URL}` + `/checkTasks`, {
     method: "POST",
     headers: {
@@ -374,7 +374,7 @@ async function checkTask(task, completed, taskId) {
   })
     .then((ans) => ans.json())
     .then((data) => {
-      console.log(taskId);
+      //console.log(taskId);
       cutTasks(completed, taskId);
     });
 }
@@ -382,7 +382,7 @@ async function checkTask(task, completed, taskId) {
 async function deleteTask(taskId) {
   let dustbin_img = document.getElementById("dustbin" + taskId);
   let task = dustbin_img.parentElement;
-  console.log(task);
+  //console.log(task);
   task.style.display = "none";
 
   let resp = await fetch(`${BACKEND_URL}` + `/deleteTask`, {
@@ -396,7 +396,7 @@ async function deleteTask(taskId) {
     }),
   }).then((res) => res.json());
 
-  console.log(resp);
+  //console.log(resp);
 }
 
 //logic for task filter dropdowns
@@ -443,16 +443,16 @@ async function taskFilter() {
   } else {
     completed = checkedVal;
   }
-  console.log(checkedVal);
-  console.log(dateVal);
-  console.log(flagVal);
+  //console.log(checkedVal);
+  //console.log(dateVal);
+  //console.log(flagVal);
   renderTasks(completed, dateVal, flagVal);
 }
 
 //login task load logic
 let loginBtn = document.getElementById("loginbtn");
 loginBtn.addEventListener("click", function () {
-  console.log("loginbtn task loading");
+  //console.log("loginbtn task loading");
   setTimeout(function () {
     renderTasks("off", "off", "off");
   }, 800);

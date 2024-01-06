@@ -21,7 +21,7 @@ router.post("/register",
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()){
-      console.log(errors);
+      //console.log(errors);
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -53,14 +53,14 @@ router.post("/login",
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log(errors);
+      //console.log(errors);
       return res.status(400).json({ errors: errors.array() });
     }
 
-    // console.log(req.body)
+    // //console.log(req.body)
     const { email, password, remember } = req.body;
-    console.log(email);
-    console.log(password);
+    //console.log(email);
+    //console.log(password);
 
     if (!email || !password) {
       res.status(400).json({ Error: "Missing credentials" });
@@ -68,7 +68,7 @@ router.post("/login",
 
     try {
       const userData = await User.findOne({ email: email });
-      console.log(userData);
+      //console.log(userData);
 
       if (!userData) {
         res.status(400).json({ errors: "Email not registered" });
@@ -88,7 +88,7 @@ router.post("/login",
             };
         const authToken = jwt.sign(data, JWT_SECRET);
         const pwd = await bcrypt.compare(password, userData.password);
-        console.log(pwd)
+        //console.log(pwd)
         if (pwd) {
           res.status(200).json({
             status: 200,
@@ -111,7 +111,7 @@ router.post("/login",
 
 router.get("/verifyToken", async (req, res) => {
   const authHeader = req.headers["authorization"];
-  console.log(authHeader);
+  //console.log(authHeader);
   const [bearer, token] = authHeader.split(" ");
   if (!token) {
     return res
@@ -122,7 +122,7 @@ router.get("/verifyToken", async (req, res) => {
   try {
     const decoded = await jwt.verify(token, JWT_SECRET);
     req.user = decoded; // Set the user information from the decoded token to the request object
-    console.log(decoded.user.remember);
+    //console.log(decoded.user.remember);
     res.status(200).json({
       status: 200,
       message: "Verified User",
@@ -152,7 +152,7 @@ router.post("/getUser", async (req, res) => {
 
     res.status(200).json({ User: user });
   } catch (error) {
-    console.error("JWT verification error:", error);
+    //console.error("JWT verification error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -176,7 +176,7 @@ router.post("/getStreaks",async (req,res) => {
 
     res.status(200).json({ Email:user.email,streaks: user.streaks });
   } catch (error) {
-    console.error("JWT verification error:", error);
+    //console.error("JWT verification error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 })
@@ -202,7 +202,7 @@ router.post("/setStreaks",async (req,res) => {
 
     res.status(200).json({ Email:user.email,Streaks: user.streaks });
   } catch (error) {
-    console.error("JWT verification error:", error);
+    //console.error("JWT verification error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 
@@ -232,7 +232,7 @@ router.post("/updateStreaks",async (req,res) => {
 
     res.status(200).json({ Email:user.email,Streaks: user.streaks });
   } catch (error) {
-    console.error("JWT verification error:", error);
+    //console.error("JWT verification error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 

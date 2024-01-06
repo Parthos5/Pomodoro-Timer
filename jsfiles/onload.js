@@ -39,10 +39,10 @@ notiftogg.addEventListener("change",function(){
 })
 function doSomething() {
 if (notiftogg.checked) {
-  console.log('Toggle is checked');
+  //console.log('Toggle is checked');
   localStorage.setItem("notification","on")
 } else {
-  console.log('Toggle is not checked');
+  //console.log('Toggle is not checked');
   localStorage.setItem("notification","off")
 }
 }
@@ -67,10 +67,10 @@ musictogg.addEventListener("change",function(){
 })
 function doSomethingformusic() {
 if (musictogg.checked) {
-  console.log('Toggle is checked');
+  //console.log('Toggle is checked');
   localStorage.setItem("musicbox","on")
 } else {
-  console.log('Toggle is not checked');
+  //console.log('Toggle is not checked');
   localStorage.setItem("musicbox","off")
 }
 }

@@ -7,7 +7,7 @@ const redirectUri = process.env.REDIRECT_URI;
 const client_id = process.env.CLIENT_ID;
 
 router.post("/getCred", async (req, res) => {
-    console.log(JWT_SECRET)
+    //console.log(JWT_SECRET)
   let { authToken } = req.body;
   if (!authToken) {
     return res.status(400).json({ error: "No auth token found" });

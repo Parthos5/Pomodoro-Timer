@@ -5,7 +5,7 @@ let breakTittle = document.getElementById("break");
 const overlay = document.getElementById("overlay");
 localStorage.setItem("timer", JSON.stringify([25, 5]));
 let timersettings = JSON.parse(localStorage.getItem("timer"));
-console.log(timersettings[0]); //WORKTIME
+//console.log(timersettings[0]); //WORKTIME
 let addTaskBtn2 = false;
 let workTime = timersettings[0];
 let breakTime = timersettings[1];
@@ -22,7 +22,7 @@ window.onload = async () => {
   workTittle.classList.add("active");
   let authToken = localStorage.getItem("authToken");
   if (authToken) {
-    console.log("verify auth");
+    //console.log("verify auth");
     let test = await fetch(`${BACKEND_URL}` + `/verifyToken`, {
       headers: {
         Authorization: "Bearer " + authToken,
@@ -31,11 +31,11 @@ window.onload = async () => {
     if (test.status == 400) {
       loginopen();
     } else {
-      console.log("auth verified");
+      //console.log("auth verified");
       fetchStreaks()
-      console.log(test.remember);
+      //console.log(test.remember);
       if (test.remember === false) {
-        console.log("remember me false");
+        //console.log("remember me false");
         localStorage.removeItem("authToken");
         loginopen();
       }
@@ -47,7 +47,7 @@ window.onload = async () => {
 
 function update() {
   timersettings = JSON.parse(localStorage.getItem("timer"));
-  console.log(timersettings[0]); //WORKTIME
+  //console.log(timersettings[0]); //WORKTIME
   workTime = timersettings[0];
   breakTime = timersettings[1];
   // let workTime = 1;
@@ -152,16 +152,16 @@ function opensettings() {
 //   // let addtaskdiv = document.getElementById("addtask")
 //   let tasksArr = await fetchTasks(completed, date, priority);
 //   tasksArrMain = tasksArr;
-//   // console.log(tasksArr)
+//   // //console.log(tasksArr)
 //   // addtaskdiv.innerHTML = ""
 //   todos.innerHTML = "";
 
 //   if (tasksArr.length > 0) {
-//     // console.log(tasksArr);
+//     // //console.log(tasksArr);
 //     for (let i = 0; i < tasksArr.length; i++) {
-//       console.log(tasksArr[i]._id);
+//       //console.log(tasksArr[i]._id);
 //       if (!tasksArr[i].completed) {
-//         console.log("inside rendering tasksArr");
+//         //console.log("inside rendering tasksArr");
 //         // todos.innerHTML = "hello"
 //         todos.innerHTML += `
 //       <div id="element" class="element">
@@ -218,7 +218,7 @@ async function loginset() {
   let passwordinput = document.getElementById("passwordinput").value;
   let rememberinput = document.getElementById("rememberme").checked;
   let loginError = document.getElementById("loginerror");
-  // console.log(rememberinput)
+  // //console.log(rememberinput)
   emailinput.value = "";
   passwordinput.value = "";
   let resp = await fetch(`${BACKEND_URL}` + `/login`, {
@@ -232,8 +232,8 @@ async function loginset() {
       remember: rememberinput,
     }),
   }).then((res) => res.json());
-  console.log(resp);
-  // console.log(resp.status);
+  //console.log(resp);
+  // //console.log(resp.status);
   if (resp.status == 200) {
     // if(rememberinput){
     localStorage.setItem("authToken", resp.authToken);
@@ -263,7 +263,7 @@ async function registerset() {
   let passwordinput = document.getElementById("passwordinputreg").value;
   let nameinput = document.getElementById("nameinputreg").value;
   let registerError = document.getElementById("registererror");
-  // console.log(rememberinput)
+  // //console.log(rememberinput)
   emailinput.value = "";
   passwordinput.value = "";
   nameinput.value = "";
@@ -279,10 +279,10 @@ async function registerset() {
       name: nameinput,
     }),
   }).then((res) => res.json());
-  console.log(resp);
-  console.log(resp.status);
+  //console.log(resp);
+  //console.log(resp.status);
   if (resp.errors) {
-    console.log(resp.errors.length);
+    //console.log(resp.errors.length);
     let errors = "";
     for (let i = 0; i < resp.errors.length; i++) {
       errors += `<p>${resp.errors[i].msg}</p>`;
@@ -297,7 +297,7 @@ async function registerset() {
 }
 
 function loginopen() {
-  console.log("in loginopen function");
+  //console.log("in loginopen function");
   login.style.visibility = "visible";
   login.classList.toggle("show");
   overlay.classList.toggle("blackout");
@@ -316,7 +316,7 @@ function registeropen() {
 function registeruser() {
   registeropen();
   loginopen();
-  console.log("in registeruser funcn");
+  //console.log("in registeruser funcn");
 }
 
 // close settings popup
@@ -332,7 +332,7 @@ function closesettings() {
 
 //fetching user streaks
 async function fetchStreaks(){
-  console.log("in fetch streaks funcn")
+  //console.log("in fetch streaks funcn")
   let authToken = localStorage.getItem("authToken");
   let resp = await fetch(`${BACKEND_URL}` + `/getStreaks`,{
     method:"POST",
@@ -343,25 +343,25 @@ async function fetchStreaks(){
       authToken
     })
   }).then((res)=>res.json());
-  console.log(resp.streaks)
+  //console.log(resp.streaks)
   localStorage.setItem("streaks",JSON.stringify(resp.streaks))
 }
 //updating streaks code
 let numericday = new Date();
 let numericdate = numericday.getDay();
-console.log("date is " + numericdate);
+//console.log("date is " + numericdate);
 if (numericdate == 0) {
   numericdate = 7;
 }
 
 const today = new Date().getDay();
-console.log("today is" + today);
+//console.log("today is" + today);
 // let streaks = [numericdate, 0, 0, 0, 0, 0, 0, 0];
 
 //function for sending streaks data
 async function updatestreaks() {
   let streaks = JSON.parse(localStorage.getItem("streaks"));
-  console.log(streaks);
+  //console.log(streaks);
   streaks[today - 1] += 1;
   let resp = await fetch(`${BACKEND_URL}` + `/updateStreaks`,{
     method:"POST",
@@ -373,7 +373,7 @@ async function updatestreaks() {
       streaks
     })
   }).then((res)=>res.json());
-  console.log(resp)
+  //console.log(resp)
   localStorage.setItem("streaks", JSON.stringify(streaks));
 }
 
@@ -381,11 +381,11 @@ async function updatestreaks() {
 async function logout() {
   let todos = document.getElementById("todos");
   todos.innerHTML = "";
-  console.log("in logout func");
+  //console.log("in logout func");
   //openlogin == true means autToken is invalid
   let openlogin = await verifyToken();
   if (openlogin) {
-    console.log("opening login popup");
+    //console.log("opening login popup");
     closesettings();
     window.location.reload();
   } else {
@@ -401,7 +401,7 @@ async function verifyToken() {
   let authToken = await localStorage.getItem("authToken");
   if (!authToken) {
     openlogin = true;
-    console.log("no auth token");
+    //console.log("no auth token");
     return openlogin;
   } else {
     let test = await fetch(`${BACKEND_URL}` + `/verifyToken`, {
@@ -409,13 +409,13 @@ async function verifyToken() {
         Authorization: "Bearer " + authToken,
       },
     }).then((res) => res.json());
-    console.log(test);
+    //console.log(test);
     if (test.status == 400) {
       openlogin = true;
       return openlogin;
     } else {
-      console.log("auth verified");
-      console.log(test);
+      //console.log("auth verified");
+      //console.log(test);
       openlogin = false;
       return openlogin;
     }

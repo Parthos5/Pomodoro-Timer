@@ -92,7 +92,7 @@ function showtabinfo(e){
         let timerset = [worktime.value,breaktime.value];
         localStorage.setItem("timer",JSON.stringify(timerset));
         }
-        console.log(themeinput.value);
+        //console.log(themeinput.value);
 
         //theme settings pushed
         localStorage.setItem("theme",themeinput.value);
@@ -108,7 +108,7 @@ document.getElementById("save").addEventListener("click",function(){
     localStorage.setItem("timer",JSON.stringify(timerset));
     }
 
-    console.log(themeinput.value);
+    //console.log(themeinput.value);
     //theme settings pushed
     localStorage.setItem("theme",themeinput.value);
 

@@ -28,7 +28,7 @@ async function findCreds() {
 
 const params = new URLSearchParams(window.location.hash.substring(1));
 const accessToken = params.get("access_token");
-console.log(accessToken);
+// //console.log(accessToken);
 
 //to get the correct permissions for that specific user
 async function author(){
@@ -39,7 +39,7 @@ async function author(){
   authbtn.style.display = "none";
 }
 
-// console.log(accessToken)
+// //console.log(accessToken)
 
 // Create an instance of the Spotify Web API
 var spotifyApi = new SpotifyWebApi();
@@ -61,7 +61,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     volume: 0.5,
   });
   // player.connect();
-  console.log("player has been defined");
+  // //console.log("player has been defined");
 };
 
 // define the query parameters
@@ -73,7 +73,7 @@ var options = {
 spotifyApi
   .searchPlaylists("study", options)
   .then(function (data) {
-    console.log(data);
+    //console.log(data);
     // the data object contains an array of playlists
     var playlists = data.playlists.items;
     // iterate through the playlists array and display them on the screen
@@ -91,7 +91,7 @@ spotifyApi
     });
   })
   .catch(function (error) {
-    console.error(error);
+    //console.error(error);
   });
 
 //search function for playlists
@@ -100,7 +100,7 @@ function search() {
   spotifyApi
     .searchPlaylists(searchs, options)
     .then(function (data) {
-      console.log(data);
+      //console.log(data);
       // the data object contains an array of playlists
       var playlists = data.playlists.items;
       playlistdiv.innerHTML = "";
@@ -116,7 +116,7 @@ function search() {
       });
     })
     .catch(function (error) {
-      console.error(error);
+      //console.error(error);
     });
 }
 
@@ -126,15 +126,15 @@ function searchtrack() {
   spotifyApi
     .searchTracks(searchsd, options)
     .then(function (data) {
-      console.log("hello");
-      console.log(data);
+      //console.log("hello");
+      //console.log(data);
       // the data object contains an array of playlists
       var tracksn = data.tracks.items;
-      console.log(tracksn);
+      //console.log(tracksn);
       // iterate through the playlists array and display them on the screen
       playlistdiv.innerHTML = "";
       tracksn.forEach(function (tracksn) {
-        console.log(tracksn.name);
+        //console.log(tracksn.name);
         playlistdiv.innerHTML += `<div onclick="playtrack(this)" class="playcard">
               <img src="${tracksn.album.images[0].url}" id="playlistimg" alt="">
               <div class="playlistdescdiv">
@@ -146,34 +146,34 @@ function searchtrack() {
       });
     })
     .catch(function (error) {
-      console.error(error);
+      //console.error(error);
     });
 }
 
 //function to play a track once it's clicked on
 function playtrack(track) {
-  // console.log("player has been defined");
+  // //console.log("player has been defined");
   let turl = track.querySelector("#trackurl").innerHTML;
-  console.log(turl);
+  //console.log(turl);
   const token = accessToken;
   let playstateimg = document.getElementById("play");
   let pausestateimg = document.getElementById("pause");
   // let device_id = '0d1841b0976bae2a3a310dd74c0f3df354899bc8';
   let mydevice;
-  console.log("before player conn");
+  //console.log("before player conn");
 
   player.connect().then((success) => {
-    console.log("after player conn");
+    //console.log("after player conn");
     if (success) {
-      console.log("success acheived");
+      //console.log("success acheived");
 
       //getting the current device id the user is on
       player.addListener("ready", ({ device_id }) => {
-        console.log("Connected with Device ID", device_id);
+        //console.log("Connected with Device ID", device_id);
         mydevice = device_id;
       });
       player.addListener("ready", () => {
-        // console.log("in funcn");
+        // //console.log("in funcn");
         fetch(
           `https://api.spotify.com/v1/me/player/play?device_id=${mydevice}`,
           {
@@ -187,8 +187,8 @@ function playtrack(track) {
             }),
           }
         )
-          .then((response) => console.log(response))
-          .catch((error) => console.error(error));
+          .then((response) => //console.log(response))
+          .catch((error) => //console.error(error));
       });
       player.addListener("player_state_changed", (state) => {
         // Check if a new track is playing
@@ -206,14 +206,14 @@ function playtrack(track) {
         }
       });
     } else {
-      console.log("Connection to Spotify Failed");
+      //console.log("Connection to Spotify Failed");
     }
   });
 }
 
 //play a playlist once it is clicked on
 async function playplaylist(e) {
-  console.log("hi im in playplaylist function");
+  //console.log("hi im in playplaylist function");
   let mydeviced;
   const token = accessToken;
   let playlisturl = e.querySelector("#playlisturl").innerHTML;
@@ -223,7 +223,7 @@ async function playplaylist(e) {
     if (success) {
 
       player.addListener("ready", ({ device_id }) => {
-        console.log("Connected with Device ID", device_id);
+        //console.log("Connected with Device ID", device_id);
         mydeviced = device_id;
       });
       // await fetch("https://api.spotify.com/v1/me/player",{
@@ -232,9 +232,9 @@ async function playplaylist(e) {
       //     "Content-Type":"application/json",
       //     "Authorization":`Bearer ${token}`,
       //   }
-      // }).then((res)=>res.json()).then((data)=>console.log(data));
-      console.log("playlist is");
-      console.log(playlisturl);
+      // }).then((res)=>res.json()).then((data)=>//console.log(data));
+      //console.log("playlist is");
+      //console.log(playlisturl);
       player.addListener("ready", () => {
         fetch(
           `https://api.spotify.com/v1/me/player/play?device_id=${mydeviced}`,
@@ -250,15 +250,15 @@ async function playplaylist(e) {
           }
         )
           .then((response) => {
-            console.log(response);
+            //console.log(response);
             if (response.ok) {
-              console.log("Playlist has started playing");
+              //console.log("Playlist has started playing");
             } else {
               throw new Error("Failed to start playing playlist");
             }
           })
           .catch((error) => {
-            console.error(error);
+            //console.error(error);
           });
       });
       player.addListener("player_state_changed", (state) => {
@@ -277,14 +277,14 @@ async function playplaylist(e) {
         }
       });
     } else {
-      console.log("Player not connected successfully");
+      //console.log("Player not connected successfully");
     }
   });
 }
 
 //function to pause the current song
 async function pause() {
-  console.log("in pause funcn");
+  //console.log("in pause funcn");
   let pausebtn = document.getElementById("pause");
   let playstateimg = document.getElementById("play");
   let mydeviceds;
@@ -297,7 +297,7 @@ async function pause() {
   })
     .then((response) => {
       if (response.ok) {
-        console.log(response);
+        //console.log(response);
         return response.json();
       }
       throw new Error("Failed to fetch current playback state");
@@ -305,7 +305,7 @@ async function pause() {
     .then(async (data) => {
       let trackUri = data.item.uri;
       let isPlaying = data.is_playing;
-      console.log(data);
+      //console.log(data);
 
       // Pause the current playback
       if (isPlaying) {
@@ -361,7 +361,7 @@ async function next() {
       }
     })
     .catch((error) => {
-      console.error(error);
+      //console.error(error);
     });
 }
 
@@ -380,7 +380,7 @@ function previous() {
       }
     })
     .catch((error) => {
-      console.error(error);
+      //console.error(error);
     });
 }
 
@@ -424,7 +424,7 @@ function previous() {
 //     songpic.src = albumImage;
 //   })
 //   .catch(error => {
-//     console.error(error);
+//     //console.error(error);
 //   });
 
 //fetching user's available devices
@@ -440,7 +440,7 @@ function previous() {
 // }).then(data => {
 //   // Use the data to get the device ID and play a track
 //   // const deviceId = data.devices[0].id;
-//   console.log(data)
+//   //console.log(data)
 //   mydevice = data.devices[1].id;
-//   console.log(mydevice);
+//   //console.log(mydevice);
 // })
