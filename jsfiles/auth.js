@@ -1,3 +1,4 @@
+const authTokenSpotify = localStorage.getItem("authToken");
 const client_id = "40e0eacdf8d744fe8bb0946f7091daf8";
 const redirect_uri = "http://127.0.0.1:5500/index.html";
 const scope = [
@@ -8,24 +9,31 @@ const scope = [
   "user-read-playback-state",
   "user-modify-playback-state",
 ];
+// let creds;
+let authUrl;
+async function findCreds() {
+  let creds = await fetch(`${BACKEND_URL}` + `/getCred`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      authToken:authTokenSpotify
+    })
+  }).then((data)=>data.json());
 
-const authUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}`;
+  authUrl = `https://accounts.spotify.com/authorize?client_id=${creds.client_id}&response_type=token&redirect_uri=${creds.redirect_uri}&scope=${scope}`;
+  
+}
 
 const params = new URLSearchParams(window.location.hash.substring(1));
 const accessToken = params.get("access_token");
 console.log(accessToken);
 
-// if(accessToken)
-// {
-//     let authbtn = document.getElementById("authbtn");
-//   authbtn.style.display = "none"
-// }
-// const accessToken =
-//"BQDHedXbxx7sZe3IrAmInR_DeV28BLYwuNUprhlIeTMhdlTcM71vDM_vpQXlxSR7Yl-VeYVxlGRN0c6fnj4qLwmlKNVhfDLFtwKBWMtFlWjYq3zbU9Lj6EPuAKEark5pLh83NwTfLA_S3-hMaTOxK7WDbAFjdvYlJr8K9TUceQDzG5Pw3Vf7qPKcqj8GVAbXJy3ucOzrYP5jmZvkY59w8uHY";
-
 //to get the correct permissions for that specific user
-function author() {
-  window.location.href = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}`;
+async function author(){
+  await findCreds();
+  window.location.href = authUrl;
   // Get the access token from the URL
   let authbtn = document.getElementById("authbtn");
   authbtn.style.display = "none";

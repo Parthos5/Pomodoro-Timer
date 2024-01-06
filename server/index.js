@@ -16,7 +16,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", require("./Routes/userfunction"));
-app.use("/", require("./Routes/tasks"))
+app.use("/", require("./Routes/tasks"));
+app.use("/",require("./Routes/spotify"));
 
 
 app.listen(port, () => {

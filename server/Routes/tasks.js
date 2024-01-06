@@ -1,10 +1,10 @@
+require('dotenv').config();
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const User = require("../models/User");
-const moment = require("moment-timezone");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 //fetch tasks
 router.post("/getTasks", async (req, res) => {

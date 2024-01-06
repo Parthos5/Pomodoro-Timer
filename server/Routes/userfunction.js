@@ -1,8 +1,7 @@
+require('dotenv').config();
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-// const jwt = require("jsonwebtoken");
-// const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM";
 const {
   query,
   body,
@@ -11,7 +10,7 @@ const {
 } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const JWT_SECRET = "MYNAMEISPARTHANDAMAWESOMEHEREIAM";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/register",
   body("email", "Please enter a valid Email ID").isEmail(),
