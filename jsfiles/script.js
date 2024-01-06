@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = "https://shy-gold-gopher-robe.cyclic.app/";
 
 let workTittle = document.getElementById("work");
 let breakTittle = document.getElementById("break");
