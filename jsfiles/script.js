@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://balance-server.onrender.com/";
+const BACKEND_URL = "https://balance-server.onrender.com";
 
 let workTittle = document.getElementById("work");
 let breakTittle = document.getElementById("break");
